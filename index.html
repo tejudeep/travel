@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Travel Map</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/jsvectormap@1.5.3/dist/css/jsvectormap.min.css">
+  <style>
+    * { box-sizing: border-box; }
+    body { margin:0; font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;
+           background:#f4f7f6; color:#1c2b2d; -webkit-font-smoothing:antialiased; }
+    .wrap { max-width:720px; margin:0 auto; padding:20px 16px 60px; }
+    header { text-align:center; margin-bottom:8px; }
+    .flag { font-size:56px; line-height:1; }
+    h1 { font-size:26px; margin:6px 0 2px; }
+    .sub { color:#6b7c7e; font-size:14px; margin:0 0 16px; }
+    #map { width:100%; height:300px; background:#fff; border-radius:16px; box-shadow:0 2px 10px rgba(0,0,0,.06); }
+    .card { background:#fff; border-radius:16px; padding:18px; margin-top:16px; box-shadow:0 2px 10px rgba(0,0,0,.06); }
+    .q { text-align:center; } .q h2 { font-size:20px; margin:4px 0 14px; }
+    .btn { display:inline-block; border:none; cursor:pointer; font-size:16px; font-weight:600;
+           padding:14px 22px; border-radius:12px; margin:6px; text-decoration:none; }
+    .btn-green { background:#2ecc71; color:#fff; }
+    .btn-blue  { background:#3498db; color:#fff; }
+    .btn-ghost { background:#eef2f1; color:#1c2b2d; }
+    .btn-wide  { display:block; width:100%; text-align:center; }
+    .hidden { display:none; }
+    .facts { list-style:none; padding:0; margin:0; }
+    .facts li { padding:8px 0; border-bottom:1px solid #eef2f1; display:flex; justify-content:space-between; gap:12px; }
+    .facts li span:first-child { color:#6b7c7e; }
+    .celebrate { text-align:center; font-size:20px; font-weight:700; color:#2ecc71; }
+    .link-row a { margin:6px 6px 0 0; }
+    .highlight-list { margin:8px 0 0; padding-left:18px; } .highlight-list li { margin:4px 0; }
+    h3 { margin:18px 0 8px; }
+    footer { text-align:center; color:#6b7c7e; font-size:12px; margin-top:26px; }
+    .loading { text-align:center; color:#6b7c7e; padding:20px; }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <header>
+      <div class="flag" id="flag">🌍</div>
+      <h1 id="countryName">Travel Map</h1>
+      <p class="sub" id="tagline">Tap one of your NFC tags to begin ✈️</p>
+    </header>
+
+    <div id="map"></div>
+
+    <div class="card q hidden" id="questionCard">
+      <h2 id="questionText">Have you been here?</h2>
+      <button class="btn btn-green" id="yesBtn">Yes, I've been! ✅</button>
+      <button class="btn btn-ghost" id="noBtn">Not yet ✈️</button>
+    </div>
+
+    <div class="card hidden" id="visitedCard">
+      <p class="celebrate">🎉 You've been to <span id="visitedName"></span>!</p>
+    </div>
+
+    <div class="card hidden" id="letsgoCard">
+      <button class="btn btn-blue btn-wide" id="letsgoBtn">Let's go! Show me this place ✨</button>
+    </div>
+
+    <div class="card hidden" id="infoCard">
+      <div id="infoBody" class="loading">Loading…</div>
+    </div>
+
+    <footer>A little travel gift 💚</footer>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/jsvectormap@1.5.3/dist/js/jsvectormap.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/jsvectormap@1.5.3/dist/maps/world.js"></script>
+  <script>
+  // ===== EDIT THESE IF YOU WANT =====
+  const HOME_CITY = "Austin";           // departure city for flight links
+  const HIGHLIGHTS = {                   // optional: your own "don't miss" tips per country code
+    JP: ["Kyoto's temples & bamboo groves", "Tokyo food scene", "Mt. Fuji & hot springs"],
+    IT: ["Rome's Colosseum", "Venice canals", "Amalfi Coast"],
+    FR: ["Eiffel Tower, Paris", "French Riviera", "Loire Valley châteaux"]
+  };
+  // ==================================
+
+  function getVisited(){ try { return JSON.parse(localStorage.getItem('visited')||'[]'); } catch(e){ return []; } }
+  function saveVisited(l){ localStorage.setItem('visited', JSON.stringify(l)); }
+  const el = id => document.getElementById(id);
+
+  const code = (new URLSearchParams(location.search).get('c')||'').toUpperCase().trim();
+  const visited = getVisited();
+
+  const map = new jsVectorMap({
+    selector: '#map', map: 'world', zoomButtons: true, regionsSelectable: false,
+    regionStyle: { initial: { fill: '#dfe6e9' }, selected: { fill: '#2ecc71' } },
+    selectedRegions: visited
+  });
+
+  if (!code) {
+    el('tagline').textContent = visited.length
+      ? `You've visited ${visited.length} ${visited.length===1?'country':'countries'} so far 🌱`
+      : "Tap one of your NFC tags to begin ✈️";
+  } else {
+    loadCountry(code);
+  }
+
+  async function loadCountry(cc){
+    let data;
+    try {
+      const res = await fetch(`https://restcountries.com/v3.1/alpha/${cc}`);
+      if (!res.ok) throw 0;
+      const json = await res.json();
+      data = Array.isArray(json) ? json[0] : json;
+      if (!data || !data.name) throw 0;
+    } catch(e) {
+      el('countryName').textContent = `Hmm, couldn't find "${cc}"`;
+      el('tagline').textContent = "Double-check the country code in the tag.";
+      return;
+    }
+    const name = data.name.common;
+    const capital = (data.capital && data.capital[0]) || name;
+    el('flag').textContent = data.flag || "🌍";
+    el('countryName').textContent = name;
+    el('tagline').textContent = capital !== name ? `Capital: ${capital}` : "";
+
+    if (visited.includes(cc)) {
+      el('visitedName').textContent = name;
+      el('visitedCard').classList.remove('hidden');
+      el('infoCard').classList.remove('hidden');
+      showInfo(data, name, capital, cc);
+    } else {
+      el('questionText').textContent = `Have you been to ${name}?`;
+      el('questionCard').classList.remove('hidden');
+      el('yesBtn').onclick = () => { const l=getVisited(); if(!l.includes(cc)) l.push(cc); saveVisited(l); location.reload(); };
+      el('noBtn').onclick = () => { el('questionCard').classList.add('hidden'); el('letsgoCard').classList.remove('hidden'); };
+      el('letsgoBtn').onclick = () => { el('letsgoCard').classList.add('hidden'); el('infoCard').classList.remove('hidden'); showInfo(data, name, capital, cc); };
+    }
+  }
+
+  async function showInfo(data, name, capital, cc){
+    const region = data.region + (data.subregion ? ` · ${data.subregion}` : "");
+    const population = data.population ? data.population.toLocaleString() : "—";
+    const currencies = data.currencies ? Object.values(data.currencies).map(c=>c.name).join(", ") : "—";
+    const languages = data.languages ? Object.values(data.languages).join(", ") : "—";
+    const flightsUrl = `https://www.google.com/travel/flights?q=` + encodeURIComponent(`Flights from ${HOME_CITY} to ${name}`);
+    const wikivoyageUrl = `https://en.wikivoyage.org/wiki/` + encodeURIComponent(name.replace(/ /g,'_'));
+    const wikipediaUrl  = `https://en.wikipedia.org/wiki/` + encodeURIComponent(name.replace(/ /g,'_'));
+    let highlightsHtml = "";
+    if (HIGHLIGHTS[cc] && HIGHLIGHTS[cc].length)
+      highlightsHtml = `<h3>Don't miss</h3><ul class="highlight-list">${HIGHLIGHTS[cc].map(h=>`<li>${h}</li>`).join("")}</ul>`;
+
+    el('infoBody').classList.remove('loading');
+    el('infoBody').innerHTML = `
+      <a class="btn btn-blue btn-wide" href="${flightsUrl}" target="_blank" rel="noopener">✈️ See flights from ${HOME_CITY} to ${name}</a>
+      <h3>About ${name}</h3><div id="aboutText">Loading…</div>
+      <ul class="facts">
+        <li><span>Capital</span><span>${capital}</span></li>
+        <li><span>Region</span><span>${region}</span></li>
+        <li><span>Population</span><span>${population}</span></li>
+        <li><span>Languages</span><span>${languages}</span></li>
+        <li><span>Currency</span><span>${currencies}</span></li>
+      </ul>
+      ${highlightsHtml}
+      <h3>Plan your trip</h3>
+      <div class="link-row">
+        <a class="btn btn-ghost" href="${wikivoyageUrl}" target="_blank" rel="noopener">🧭 Things to do</a>
+        <a class="btn btn-ghost" href="${wikipediaUrl}" target="_blank" rel="noopener">📖 History</a>
+      </div>`;
+    try {
+      const w = await (await fetch(`https://en.wikipedia.org/api/rest_v1/page/summary/`+encodeURIComponent(name))).json();
+      el('aboutText').textContent = w.extract || "No summary available.";
+    } catch(e){ el('aboutText').textContent = "Couldn't load the description right now."; }
+  }
+  </script>
+</body>
+</html>
