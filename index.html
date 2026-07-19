@@ -1,208 +1,295 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Travel Map</title>
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/jsvectormap@1.5.3/dist/css/jsvectormap.min.css">
-  <style>
-    * { box-sizing: border-box; }
-    body { margin:0; font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;
-           background:#f4f7f6; color:#1c2b2d; -webkit-font-smoothing:antialiased; }
-    .wrap { max-width:720px; margin:0 auto; padding:20px 16px 60px; }
-    header { text-align:center; margin-bottom:8px; }
-    .flag { font-size:56px; line-height:1; }
-    h1 { font-size:26px; margin:6px 0 2px; }
-    .sub { color:#6b7c7e; font-size:14px; margin:0 0 16px; }
-    #map { width:100%; height:300px; background:#fff; border-radius:16px; box-shadow:0 2px 10px rgba(0,0,0,.06); }
-    .card { background:#fff; border-radius:16px; padding:18px; margin-top:16px; box-shadow:0 2px 10px rgba(0,0,0,.06); }
-    .q { text-align:center; } .q h2 { font-size:20px; margin:4px 0 14px; }
-    .btn { display:inline-block; border:none; cursor:pointer; font-size:16px; font-weight:600;
-           padding:14px 22px; border-radius:12px; margin:6px; text-decoration:none; }
-    .btn-green { background:#2ecc71; color:#fff; }
-    .btn-blue  { background:#3498db; color:#fff; }
-    .btn-ghost { background:#eef2f1; color:#1c2b2d; }
-    .btn-wide  { display:block; width:100%; text-align:center; }
-    .hidden { display:none; }
-    .facts { list-style:none; padding:0; margin:0; }
-    .facts li { padding:8px 0; border-bottom:1px solid #eef2f1; display:flex; justify-content:space-between; gap:12px; }
-    .facts li span:first-child { color:#6b7c7e; }
-    .celebrate { text-align:center; font-size:20px; font-weight:700; color:#2ecc71; }
-    .link-row a { margin:6px 6px 0 0; }
-    .highlight-list { margin:8px 0 0; padding-left:18px; } .highlight-list li { margin:4px 0; }
-    h3 { margin:18px 0 8px; }
-    footer { text-align:center; color:#6b7c7e; font-size:12px; margin-top:26px; }
-    .loading { text-align:center; color:#6b7c7e; padding:20px; }
-  </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#0ea5e9">
+<title>Travel Map</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Sora:wght@600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/jsvectormap@1.5.3/dist/css/jsvectormap.min.css">
+<style>
+  :root{ --bg:#f6f9fa; --card:#fff; --ink:#0f172a; --muted:#64748b; --line:#e8edf1;
+         --accent:#10b981; --radius:20px; --shadow:0 12px 34px -14px rgba(2,32,45,.20); }
+  *{ box-sizing:border-box; }
+  html{ scroll-behavior:smooth; }
+  body{ margin:0; background:var(--bg); color:var(--ink); font-family:Inter,-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;
+        -webkit-font-smoothing:antialiased; }
+  h1,h2,h4{ font-family:Sora,sans-serif; letter-spacing:-.01em; }
+  h2{ font-weight:700; font-size:22px; margin:6px 0 14px; }
+  .wrap{ max-width:880px; margin:0 auto; padding:0 16px 80px; }
+  section{ margin-top:22px; }
+  .kicker{ text-transform:uppercase; letter-spacing:.13em; font-size:12px; font-weight:700; color:var(--accent); }
+  .muted{ color:var(--muted); font-size:13px; margin:0; }
+  .prose{ color:#334155; line-height:1.75; font-size:15px; }
+  .hidden{ display:none !important; }
+
+  /* Hero */
+  .hero{ position:relative; width:100%; min-height:46vh; display:flex; align-items:flex-end; overflow:hidden; }
+  .hero-media{ position:absolute; inset:0; background:linear-gradient(135deg,#0ea5e9,#10b981);
+               background-size:cover; background-position:center; transform:scale(1.05); }
+  .hero-grad{ position:absolute; inset:0; background:linear-gradient(180deg,rgba(2,20,28,0) 25%,rgba(2,20,28,.55) 72%,rgba(2,20,28,.85) 100%); }
+  .hero-inner{ position:relative; z-index:2; width:100%; max-width:880px; margin:0 auto; padding:26px 20px 56px; color:#fff; }
+  .hero-flag{ font-size:54px; line-height:1; filter:drop-shadow(0 5px 12px rgba(0,0,0,.4)); }
+  .hero h1{ font-weight:800; font-size:40px; margin:6px 0 4px; text-shadow:0 2px 22px rgba(0,0,0,.4); }
+  .hero-sub{ font-size:16px; opacity:.95; margin:0; }
+  .badge{ display:inline-flex; align-items:center; gap:6px; background:rgba(16,185,129,.96); color:#fff;
+          font-size:12px; font-weight:600; padding:6px 13px; border-radius:999px; margin-bottom:10px; }
+  @media(min-width:720px){ .hero{ min-height:54vh; } .hero h1{ font-size:54px; } }
+
+  /* Cards & buttons */
+  .card{ background:var(--card); border:1px solid var(--line); border-radius:var(--radius); padding:20px; box-shadow:var(--shadow); }
+  .q,#visitedCard,#letsgoCard{ margin-top:-42px; position:relative; z-index:5; }
+  .q{ text-align:center; } .q h2{ margin:0 0 16px; }
+  .q .btns{ display:flex; gap:10px; justify-content:center; flex-wrap:wrap; }
+  .celebrate{ text-align:center; font-family:Sora; font-weight:700; font-size:20px; color:var(--accent); margin:0; }
+  .btn{ display:inline-flex; align-items:center; justify-content:center; gap:8px; border:none; cursor:pointer;
+        font-family:Inter; font-size:15px; font-weight:600; padding:14px 22px; border-radius:999px; text-decoration:none;
+        transition:transform .16s ease, box-shadow .22s ease; }
+  .btn:active{ transform:scale(.97); }
+  .btn-yes{ background:linear-gradient(135deg,#10b981,#059669); color:#fff; box-shadow:0 12px 22px -10px rgba(16,185,129,.8); }
+  .btn-yes:hover{ transform:translateY(-2px); }
+  .btn-ghost{ background:#fff; color:var(--ink); border:1px solid var(--line); }
+  .btn-ghost:hover{ background:#f8fafc; }
+  .btn-lets{ width:100%; background:linear-gradient(135deg,#0ea5e9,#6366f1); color:#fff; font-size:17px; padding:17px;
+             box-shadow:0 16px 32px -12px rgba(79,70,229,.65); }
+  .btn-lets:hover{ transform:translateY(-2px); }
+  .btn-fly{ background:linear-gradient(135deg,#0ea5e9,#2563eb); color:#fff; white-space:nowrap;
+            box-shadow:0 12px 22px -10px rgba(37,99,235,.7); }
+  .btn-fly:hover{ transform:translateY(-2px); }
+  .cta{ display:flex; align-items:center; justify-content:space-between; gap:16px; flex-wrap:wrap; }
+
+  /* Map */
+  #map{ width:100%; height:320px; }
+
+  /* Things-to-do grid */
+  .grid{ display:grid; grid-template-columns:repeat(auto-fill,minmax(220px,1fr)); gap:16px; }
+  .tile{ display:block; text-decoration:none; color:inherit; background:var(--card); border:1px solid var(--line);
+         border-radius:18px; overflow:hidden; box-shadow:var(--shadow); transition:transform .25s ease, box-shadow .25s ease; }
+  .tile:hover{ transform:translateY(-5px); box-shadow:0 22px 44px -16px rgba(2,32,45,.32); }
+  .tile .img{ aspect-ratio:4/3; background:linear-gradient(135deg,#cbd5e1,#93c5fd); background-size:cover; background-position:center; transition:transform .55s ease; }
+  .tile:hover .img{ transform:scale(1.07); }
+  .tile .body{ padding:14px 15px 16px; }
+  .tile h4{ margin:0 0 6px; font-size:16px; }
+  .tile p{ margin:0; font-size:13px; color:var(--muted); line-height:1.55; }
+
+  /* History feature */
+  .feature{ display:grid; grid-template-columns:1fr 1.1fr; gap:20px; align-items:center; }
+  .fimg{ aspect-ratio:4/3; border-radius:18px; background:linear-gradient(135deg,#cbd5e1,#93c5fd); background-size:cover; background-position:center; box-shadow:var(--shadow); }
+  @media(max-width:640px){ .feature{ grid-template-columns:1fr; } }
+
+  /* Facts chips */
+  .chips{ display:flex; flex-wrap:wrap; gap:10px; }
+  .chip{ background:#f1f5f7; border:1px solid var(--line); border-radius:999px; padding:8px 14px; font-size:13px; }
+  .chip span{ color:var(--muted); } .chip b{ color:var(--ink); font-weight:600; }
+
+  /* Skeletons + reveal animation */
+  .skeleton{ background:linear-gradient(90deg,#eef2f4 25%,#e1e8ec 37%,#eef2f4 63%); background-size:400% 100%; animation:shimmer 1.4s infinite; }
+  @keyframes shimmer{ 0%{background-position:100% 0} 100%{background-position:0 0} }
+  .sk-line{ height:12px; border-radius:6px; margin:9px 0; } .sk-line.short{ width:60%; }
+  .reveal{ opacity:0; transform:translateY(16px); transition:opacity .6s cubic-bezier(.2,.7,.2,1), transform .6s cubic-bezier(.2,.7,.2,1); }
+  .reveal.in{ opacity:1; transform:none; }
+
+  footer{ text-align:center; color:var(--muted); font-size:12px; padding:34px 16px; }
+</style>
 </head>
 <body>
-  <div class="wrap">
-    <header>
-      <div class="flag" id="flag">🌍</div>
-      <h1 id="countryName">Travel Map</h1>
-      <p class="sub" id="tagline">Tap one of your NFC tags to begin ✈️</p>
-    </header>
+  <header class="hero" id="hero">
+    <div class="hero-media skeleton" id="heroMedia"></div>
+    <div class="hero-grad"></div>
+    <div class="hero-inner reveal" id="heroInner">
+      <span class="badge hidden" id="badge"></span>
+      <div class="hero-flag" id="flag">🌍</div>
+      <h1 id="countryName">Your Travel Map</h1>
+      <p class="hero-sub" id="tagline">Tap a tag to begin ✈️</p>
+    </div>
+  </header>
 
-    <div id="map"></div>
-
-    <div class="card q hidden" id="questionCard">
+  <main class="wrap">
+    <section class="card q reveal hidden" id="questionCard">
       <h2 id="questionText">Have you been here?</h2>
-      <button class="btn btn-green" id="yesBtn">Yes, I've been! ✅</button>
-      <button class="btn btn-ghost" id="noBtn">Not yet ✈️</button>
-    </div>
+      <div class="btns">
+        <button class="btn btn-yes" id="yesBtn">Yes, I've been ✅</button>
+        <button class="btn btn-ghost" id="noBtn">Not yet ✈️</button>
+      </div>
+    </section>
 
-    <div class="card hidden" id="visitedCard">
+    <section class="card reveal hidden" id="visitedCard">
       <p class="celebrate">🎉 You've been to <span id="visitedName"></span>!</p>
-    </div>
+    </section>
 
-    <div class="card hidden" id="letsgoCard">
-      <button class="btn btn-blue btn-wide" id="letsgoBtn">Let's go! Show me this place ✨</button>
-    </div>
+    <section class="reveal hidden" id="letsgoCard">
+      <button class="btn btn-lets" id="letsgoBtn">Let's go — explore this place ✨</button>
+    </section>
 
-    <div class="card hidden" id="infoCard">
-      <div id="infoBody" class="loading">Loading…</div>
-    </div>
+    <section class="card reveal" id="mapCard">
+      <span class="kicker">Your journey</span>
+      <h2 id="mapTitle">Your travel map</h2>
+      <div id="map"></div>
+    </section>
 
-    <footer>A little travel gift 💚</footer>
-  </div>
+    <div id="content" class="hidden"></div>
+  </main>
+
+  <footer>A little travel gift 💚</footer>
 
   <script src="https://cdn.jsdelivr.net/npm/jsvectormap@1.5.3/dist/js/jsvectormap.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/jsvectormap@1.5.3/dist/maps/world.js"></script>
   <script>
-  // ===== EDIT THESE IF YOU WANT =====
+  // ===== EDIT THESE =====
   const HOME_CITY = "Austin";
+  // Hand-picked places per country. Use Wikipedia article titles for the best photos.
   const HIGHLIGHTS = {
-    JP: ["Kyoto's temples & bamboo groves", "Tokyo food scene", "Mt. Fuji & hot springs"],
-    IT: ["Rome's Colosseum", "Venice canals", "Amalfi Coast"],
-    FR: ["Eiffel Tower, Paris", "French Riviera", "Loire Valley châteaux"]
+    JP:["Mount Fuji","Fushimi Inari-taisha","Kinkaku-ji","Tokyo Tower","Itsukushima Shrine","Arashiyama"],
+    IT:["Colosseum","Venice","Florence Cathedral","Amalfi Coast","Leaning Tower of Pisa","Pompeii"],
+    FR:["Eiffel Tower","Louvre","Palace of Versailles","Mont-Saint-Michel","French Riviera","Notre-Dame de Paris"],
+    ES:["Sagrada Família","Alhambra","Park Güell","Seville Cathedral","Plaza Mayor, Madrid","Guggenheim Museum Bilbao"],
+    GB:["Big Ben","Tower Bridge","Stonehenge","Edinburgh Castle","Buckingham Palace","Roman Baths (Bath)"],
+    US:["Grand Canyon","Statue of Liberty","Golden Gate Bridge","Yellowstone National Park","Times Square","Walt Disney World"],
+    MX:["Chichen Itza","Teotihuacan","Tulum","Cancún","Cabo San Lucas","Palenque"],
+    TH:["Grand Palace","Wat Arun","Wat Pho","Phi Phi Islands","Ayutthaya Historical Park","Railay Beach"],
+    GR:["Acropolis of Athens","Santorini","Parthenon","Meteora","Delphi","Mykonos"],
+    IN:["Taj Mahal","Hawa Mahal","Golden Temple","Varanasi","Amer Fort","Gateway of India"],
+    AU:["Sydney Opera House","Great Barrier Reef","Uluru","Sydney Harbour Bridge","Bondi Beach","Great Ocean Road"],
+    BR:["Christ the Redeemer (statue)","Iguazu Falls","Copacabana, Rio de Janeiro","Maracanã Stadium","Amazon rainforest","Fernando de Noronha"],
+    PT:["Belém Tower","Pena Palace","Jerónimos Monastery","Douro Valley","Algarve","Sintra"],
+    EG:["Giza pyramid complex","Great Sphinx of Giza","Karnak","Valley of the Kings","Abu Simbel","Luxor Temple"],
+    PE:["Machu Picchu","Cusco","Sacsayhuamán","Lake Titicaca","Nazca Lines","Vinicunca"]
   };
-  // Backup names (used only if the live info service is unavailable)
   const NAMES = {
-    JP:"Japan", IT:"Italy", FR:"France", ES:"Spain", DE:"Germany", GB:"United Kingdom",
-    US:"United States", MX:"Mexico", CA:"Canada", BR:"Brazil", AR:"Argentina", PE:"Peru",
-    CL:"Chile", CO:"Colombia", AU:"Australia", NZ:"New Zealand", TH:"Thailand", VN:"Vietnam",
-    IN:"India", CN:"China", KR:"South Korea", ID:"Indonesia", MY:"Malaysia", SG:"Singapore",
-    PH:"Philippines", GR:"Greece", PT:"Portugal", NL:"Netherlands", BE:"Belgium", CH:"Switzerland",
-    AT:"Austria", IE:"Ireland", SE:"Sweden", NO:"Norway", DK:"Denmark", FI:"Finland",
-    IS:"Iceland", PL:"Poland", CZ:"Czechia", HU:"Hungary", HR:"Croatia", TR:"Turkey",
-    EG:"Egypt", MA:"Morocco", ZA:"South Africa", KE:"Kenya", TZ:"Tanzania", AE:"United Arab Emirates",
-    IL:"Israel", JO:"Jordan", SA:"Saudi Arabia", QA:"Qatar", CR:"Costa Rica", PA:"Panama",
-    CU:"Cuba", DO:"Dominican Republic", JM:"Jamaica", EC:"Ecuador", BO:"Bolivia", UY:"Uruguay",
-    RO:"Romania", BG:"Bulgaria", RS:"Serbia", SK:"Slovakia", SI:"Slovenia", LK:"Sri Lanka",
-    NP:"Nepal", KH:"Cambodia", LA:"Laos", MM:"Myanmar", FJ:"Fiji", MV:"Maldives"
+    JP:"Japan",IT:"Italy",FR:"France",ES:"Spain",DE:"Germany",GB:"United Kingdom",US:"United States",MX:"Mexico",
+    CA:"Canada",BR:"Brazil",AR:"Argentina",PE:"Peru",CL:"Chile",CO:"Colombia",AU:"Australia",NZ:"New Zealand",
+    TH:"Thailand",VN:"Vietnam",IN:"India",CN:"China",KR:"South Korea",ID:"Indonesia",MY:"Malaysia",SG:"Singapore",
+    PH:"Philippines",GR:"Greece",PT:"Portugal",NL:"Netherlands",BE:"Belgium",CH:"Switzerland",AT:"Austria",IE:"Ireland",
+    SE:"Sweden",NO:"Norway",DK:"Denmark",FI:"Finland",IS:"Iceland",PL:"Poland",CZ:"Czechia",HU:"Hungary",HR:"Croatia",
+    TR:"Turkey",EG:"Egypt",MA:"Morocco",ZA:"South Africa",KE:"Kenya",TZ:"Tanzania",AE:"United Arab Emirates",IL:"Israel",
+    JO:"Jordan",SA:"Saudi Arabia",QA:"Qatar",CR:"Costa Rica",PA:"Panama",CU:"Cuba",DO:"Dominican Republic",JM:"Jamaica",
+    EC:"Ecuador",BO:"Bolivia",UY:"Uruguay",RO:"Romania",BG:"Bulgaria",RS:"Serbia",LK:"Sri Lanka",NP:"Nepal",
+    KH:"Cambodia",LA:"Laos",MM:"Myanmar",FJ:"Fiji",MV:"Maldives"
   };
-  // ==================================
+  // ======================
 
-  function getVisited(){ try { return JSON.parse(localStorage.getItem('visited')||'[]'); } catch(e){ return []; } }
+  const $ = id => document.getElementById(id);
+  const heroMedia=$('heroMedia'), flagEl=$('flag'), nameEl=$('countryName'), taglineEl=$('tagline'), badgeEl=$('badge'),
+        questionCard=$('questionCard'), visitedCard=$('visitedCard'), letsgoCard=$('letsgoCard'),
+        mapCard=$('mapCard'), content=$('content'), mapTitle=$('mapTitle');
+
+  function getVisited(){ try{return JSON.parse(localStorage.getItem('visited')||'[]')}catch(e){return[]} }
   function saveVisited(l){ localStorage.setItem('visited', JSON.stringify(l)); }
-  const el = id => document.getElementById(id);
+  function flagFromCode(cc){ return /^[A-Z]{2}$/.test(cc)? cc.replace(/./g,c=>String.fromCodePoint(127397+c.charCodeAt())) : "🌍"; }
+  function reveal(n,d=0){ if(n) setTimeout(()=>n.classList.add('in'), d); }
+  function revealAll(root,step=90){ root.querySelectorAll('.reveal').forEach((n,i)=>reveal(n,i*step)); }
+  function esc(s){ return (s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
+  function setBg(node,url){ if(!node) return; if(!url){ node.classList.remove('skeleton'); return; }
+    const im=new Image(); im.onload=()=>{ node.style.backgroundImage=`url("${url}")`; node.classList.remove('skeleton'); };
+    im.onerror=()=>node.classList.remove('skeleton'); im.src=url; }
+  function imgFrom(s,size){ if(!s) return null;
+    if(s.thumbnail&&s.thumbnail.source) return s.thumbnail.source.replace(/\/\d+px-/,'/'+size+'px-');
+    if(s.originalimage&&s.originalimage.source) return s.originalimage.source; return null; }
+  async function wikiSummary(title){ try{
+      const r=await fetch('https://en.wikipedia.org/api/rest_v1/page/summary/'+encodeURIComponent(title.replace(/ /g,'_')));
+      return r.ok? await r.json() : null;
+    }catch(e){ return null; } }
 
-  // 2-letter code -> flag emoji, no internet needed
-  function flagFromCode(cc){
-    if(!/^[A-Z]{2}$/.test(cc)) return "🌍";
-    return cc.replace(/./g, c => String.fromCodePoint(127397 + c.charCodeAt()));
-  }
+  const code=(new URLSearchParams(location.search).get('c')||'').toUpperCase().trim();
+  const visited=getVisited();
 
-  const code = (new URLSearchParams(location.search).get('c')||'').toUpperCase().trim();
-  const visited = getVisited();
+  const map=new jsVectorMap({ selector:'#map', map:'world', zoomButtons:true, regionsSelectable:false,
+    regionStyle:{ initial:{fill:'#e2e8ec'}, selected:{fill:'#10b981'} }, selectedRegions:visited });
 
-  const map = new jsVectorMap({
-    selector:'#map', map:'world', zoomButtons:true, regionsSelectable:false,
-    regionStyle:{ initial:{ fill:'#dfe6e9' }, selected:{ fill:'#2ecc71' } },
-    selectedRegions: visited
-  });
+  reveal($('heroInner'),80); reveal(mapCard,220);
 
   if(!code){
-    el('tagline').textContent = visited.length
-      ? `You've visited ${visited.length} ${visited.length===1?'country':'countries'} so far 🌱`
-      : "Tap one of your NFC tags to begin ✈️";
-  } else {
-    loadCountry(code);
-  }
+    nameEl.textContent="Your Travel Map";
+    taglineEl.textContent=visited.length?`${visited.length} ${visited.length===1?'country':'countries'} explored 🌱`:"Tap a tag to begin ✈️";
+    setBg(heroMedia,null);
+  } else { loadCountry(code); }
 
   async function loadCountry(cc){
-    let name = NAMES[cc] || null;
-    let capital = null, region="—", population="—", currencies="—", languages="—", apiOk = false;
+    let name=NAMES[cc]||null, capital=null, region="—", population="—", currencies="—", languages="—", apiOk=false;
+    try{
+      const res=await fetch(`https://restcountries.com/v3.1/alpha/${cc}?fields=name,capital,region,subregion,population,languages,currencies`);
+      if(res.ok){ const j=await res.json(); const d=Array.isArray(j)?j[0]:j;
+        if(d&&d.name){ apiOk=true; name=d.name.common; capital=(d.capital&&d.capital[0])||null;
+          region=d.region+(d.subregion?` · ${d.subregion}`:""); population=d.population?d.population.toLocaleString():"—";
+          currencies=d.currencies?Object.values(d.currencies).map(c=>c.name).join(", "):"—";
+          languages=d.languages?Object.values(d.languages).join(", "):"—"; } }
+    }catch(e){}
 
-    try {
-      const url = `https://restcountries.com/v3.1/alpha/${cc}?fields=name,capital,region,subregion,population,languages,currencies`;
-      const res = await fetch(url);
-      if(res.ok){
-        const json = await res.json();
-        const d = Array.isArray(json) ? json[0] : json;
-        if(d && d.name){
-          apiOk = true;
-          name = d.name.common;
-          capital = (d.capital && d.capital[0]) || null;
-          region = d.region + (d.subregion ? ` · ${d.subregion}` : "");
-          population = d.population ? d.population.toLocaleString() : "—";
-          currencies = d.currencies ? Object.values(d.currencies).map(c=>c.name).join(", ") : "—";
-          languages  = d.languages  ? Object.values(d.languages).join(", ") : "—";
-        }
-      }
-    } catch(e){ /* offline or blocked — backup name is used */ }
+    if(!name){ nameEl.textContent=`Couldn't find "${cc}"`; taglineEl.textContent="That doesn't look like a valid 2-letter country code."; setBg(heroMedia,null); return; }
 
-    if(!name){
-      el('countryName').textContent = `Hmm, couldn't find "${cc}"`;
-      el('tagline').textContent = "That doesn't look like a valid 2-letter country code.";
-      return;
-    }
+    const already=visited.includes(cc);
+    flagEl.textContent=flagFromCode(cc); nameEl.textContent=name; taglineEl.textContent=capital||"";
+    if(already){ badgeEl.textContent="✓ Visited"; badgeEl.classList.remove('hidden'); }
 
-    el('flag').textContent = flagFromCode(cc);
-    el('countryName').textContent = name;
-    el('tagline').textContent = capital ? `Capital: ${capital}` : "";
+    const ctx={cc,name,capital:capital||name,region,population,currencies,languages,apiOk};
+    renderSkeletons(ctx); prepareContent(ctx);
 
-    const info = { name, capital: capital || name, cc, region, population, currencies, languages, apiOk };
-
-    if(visited.includes(cc)){
-      el('visitedName').textContent = name;
-      el('visitedCard').classList.remove('hidden');
-      el('infoCard').classList.remove('hidden');
-      showInfo(info);
+    if(already){
+      $('visitedName').textContent=name; visitedCard.classList.remove('hidden'); reveal(visitedCard,120); showContent();
     } else {
-      el('questionText').textContent = `Have you been to ${name}?`;
-      el('questionCard').classList.remove('hidden');
-      el('yesBtn').onclick = () => { const l=getVisited(); if(!l.includes(cc)) l.push(cc); saveVisited(l); location.reload(); };
-      el('noBtn').onclick  = () => { el('questionCard').classList.add('hidden'); el('letsgoCard').classList.remove('hidden'); };
-      el('letsgoBtn').onclick = () => { el('letsgoCard').classList.add('hidden'); el('infoCard').classList.remove('hidden'); showInfo(info); };
+      $('questionText').textContent=`Have you been to ${name}?`; questionCard.classList.remove('hidden'); reveal(questionCard,120);
+      $('yesBtn').onclick=()=>{ const l=getVisited(); if(!l.includes(cc))l.push(cc); saveVisited(l); location.reload(); };
+      $('noBtn').onclick=()=>{ questionCard.classList.add('hidden'); letsgoCard.classList.remove('hidden'); reveal(letsgoCard,40); };
+      $('letsgoBtn').onclick=()=>{ letsgoCard.classList.add('hidden'); showContent(); };
     }
   }
 
-  async function showInfo(info){
-    const { name, cc, region, population, currencies, languages, apiOk } = info;
-    const flightsUrl    = `https://www.google.com/travel/flights?q=` + encodeURIComponent(`Flights from ${HOME_CITY} to ${name}`);
-    const wikivoyageUrl = `https://en.wikivoyage.org/wiki/` + encodeURIComponent(name.replace(/ /g,'_'));
-    const wikipediaUrl  = `https://en.wikipedia.org/wiki/` + encodeURIComponent(name.replace(/ /g,'_'));
+  function showContent(){ content.classList.remove('hidden'); revealAll(content,90); }
 
-    let highlightsHtml = "";
-    if(HIGHLIGHTS[cc] && HIGHLIGHTS[cc].length)
-      highlightsHtml = `<h3>Don't miss</h3><ul class="highlight-list">${HIGHLIGHTS[cc].map(h=>`<li>${h}</li>`).join("")}</ul>`;
+  function renderSkeletons(ctx){
+    const flightsUrl=`https://www.google.com/travel/flights?q=`+encodeURIComponent(`Flights from ${HOME_CITY} to ${ctx.name}`);
+    const n=(HIGHLIGHTS[ctx.cc]||[]).length||6; let tiles='';
+    for(let i=0;i<n;i++) tiles+=`<div class="tile"><div class="img skeleton"></div><div class="body"><div class="sk-line skeleton"></div><div class="sk-line short skeleton"></div></div></div>`;
+    const facts = ctx.apiOk ? `
+      <section class="card reveal" id="factsCard"><span class="kicker">Quick facts</span><h2>Good to know</h2>
+        <div class="chips">
+          <div class="chip"><span>Capital</span> <b>${esc(ctx.capital)}</b></div>
+          <div class="chip"><span>Region</span> <b>${esc(ctx.region)}</b></div>
+          <div class="chip"><span>Population</span> <b>${esc(ctx.population)}</b></div>
+          <div class="chip"><span>Languages</span> <b>${esc(ctx.languages)}</b></div>
+          <div class="chip"><span>Currency</span> <b>${esc(ctx.currencies)}</b></div>
+        </div></section>` : '';
+    content.innerHTML=`
+      <section class="card cta reveal" id="flightsCard">
+        <div><span class="kicker">Getting there</span><h2 style="margin:2px 0">Fly from ${esc(HOME_CITY)}</h2><p class="muted">Check live prices on Google Flights</p></div>
+        <a class="btn btn-fly" href="${flightsUrl}" target="_blank" rel="noopener">✈️ See flights</a>
+      </section>
+      <section class="reveal" id="aboutSection"><span class="kicker">Overview</span><h2>About ${esc(ctx.name)}</h2><p class="prose" id="aboutText">Loading…</p></section>
+      <section class="reveal" id="thingsSection"><span class="kicker">Things to do</span><h2>Must-see places</h2>
+        <div class="grid" id="thingsGrid">${tiles}</div><p class="prose hidden" id="thingsFallback"></p></section>
+      <section class="reveal hidden" id="historySection"><span class="kicker">History</span><h2>A glimpse into the past</h2>
+        <div class="feature"><div class="fimg skeleton" id="historyImg"></div><p class="prose" id="historyText">Loading…</p></div></section>
+      ${facts}`;
+  }
 
-    const factsHtml = apiOk ? `
-      <ul class="facts">
-        <li><span>Capital</span><span>${info.capital}</span></li>
-        <li><span>Region</span><span>${region}</span></li>
-        <li><span>Population</span><span>${population}</span></li>
-        <li><span>Languages</span><span>${languages}</span></li>
-        <li><span>Currency</span><span>${currencies}</span></li>
-      </ul>` : "";
+  async function prepareContent(ctx){
+    const titles=HIGHLIGHTS[ctx.cc]||[];
+    const [countrySum,historySum,attrs]=await Promise.all([
+      wikiSummary(ctx.name), wikiSummary('History of '+ctx.name), Promise.all(titles.map(t=>wikiSummary(t)))
+    ]);
 
-    el('infoBody').classList.remove('loading');
-    el('infoBody').innerHTML = `
-      <a class="btn btn-blue btn-wide" href="${flightsUrl}" target="_blank" rel="noopener">✈️ See flights from ${HOME_CITY} to ${name}</a>
-      <h3>About ${name}</h3><div id="aboutText">Loading…</div>
-      ${factsHtml}
-      ${highlightsHtml}
-      <h3>Plan your trip</h3>
-      <div class="link-row">
-        <a class="btn btn-ghost" href="${wikivoyageUrl}" target="_blank" rel="noopener">🧭 Things to do</a>
-        <a class="btn btn-ghost" href="${wikipediaUrl}" target="_blank" rel="noopener">📖 History</a>
-      </div>`;
+    let heroUrl=null; for(const s of attrs){ const u=imgFrom(s,1200); if(u){heroUrl=u;break;} }
+    if(!heroUrl) heroUrl=imgFrom(countrySum,1200);
+    setBg(heroMedia,heroUrl);
 
-    try {
-      const w = await (await fetch(`https://en.wikipedia.org/api/rest_v1/page/summary/`+encodeURIComponent(name))).json();
-      el('aboutText').textContent = w.extract || "No summary available.";
-    } catch(e){ el('aboutText').textContent = "Couldn't load the description right now."; }
+    if($('aboutText')) $('aboutText').textContent=(countrySum&&countrySum.extract)||"Description unavailable right now.";
+
+    if(historySum&&historySum.extract){ $('historySection').classList.remove('hidden');
+      $('historyText').textContent=historySum.extract; setBg($('historyImg'), imgFrom(historySum,900)||imgFrom(countrySum,900)); }
+
+    const grid=$('thingsGrid');
+    if(!titles.length){ grid.classList.add('hidden'); const fb=$('thingsFallback'); fb.classList.remove('hidden');
+      fb.innerHTML=`No hand-picked spots for ${esc(ctx.name)} yet — <a href="https://en.wikivoyage.org/wiki/${encodeURIComponent(ctx.name.replace(/ /g,'_'))}" target="_blank" rel="noopener">browse ideas on Wikivoyage →</a>`;
+    } else {
+      grid.innerHTML=titles.map((t,i)=>{ const s=attrs[i]; const title=(s&&s.title)||t;
+        let desc=(s&&s.extract)||""; if(desc.length>150) desc=desc.slice(0,150).replace(/\s+\S*$/,'')+'…';
+        const img=imgFrom(s,600); const link=(s&&s.content_urls&&s.content_urls.desktop&&s.content_urls.desktop.page)||`https://en.wikipedia.org/wiki/${encodeURIComponent(t.replace(/ /g,'_'))}`;
+        return `<a class="tile" href="${link}" target="_blank" rel="noopener"><div class="img" ${img?`style="background-image:url('${img}')"`:''}></div>
+          <div class="body"><h4>${esc(title)}</h4><p>${esc(desc)}</p></div></a>`;
+      }).join('');
+    }
   }
   </script>
 </body>
