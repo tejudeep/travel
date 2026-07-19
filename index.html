@@ -10,14 +10,13 @@
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600;9..144,700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/jsvectormap@1.5.3/dist/css/jsvectormap.min.css">
 <style>
-  :root{ --bg:#f7f3ec; --card:#fffdf9; --ink:#17171a; --muted:#6f6a61; --line:#e9e2d6;
-         --accent:#b45309; --green:#10b981; --radius:20px; --shadow:0 14px 38px -16px rgba(40,30,15,.25); }
+  :root{ --bg:#f7f3ec; --card:#fffdf9; --ink:#17171a; --muted:#6f6a61; --line:#e9e2d6; --accent:#b45309; --green:#10b981; --radius:20px; --shadow:0 14px 38px -16px rgba(40,30,15,.25); }
   *{ box-sizing:border-box; }
   html{ scroll-behavior:smooth; }
   body{ margin:0; background:var(--bg); color:var(--ink); font-family:Inter,-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif; -webkit-font-smoothing:antialiased; }
   h1,h2,h3,h4,.celebrate{ font-family:Fraunces,Georgia,serif; letter-spacing:-.01em; }
   h2{ font-weight:700; font-size:24px; margin:6px 0 14px; }
-  .wrap{ max-width:900px; margin:0 auto; padding:0 16px 90px; }
+  .wrap{ max-width:900px; margin:0 auto; padding:0 16px 100px; }
   section{ margin-top:26px; }
   .kicker{ text-transform:uppercase; letter-spacing:.15em; font-size:12px; font-weight:700; color:var(--accent); }
   .muted{ color:var(--muted); font-size:13px; margin:0; }
@@ -25,8 +24,8 @@
   .hidden{ display:none !important; }
 
   .hero{ position:relative; width:100%; min-height:50vh; display:flex; align-items:flex-end; overflow:hidden; }
-  .hero-media{ position:absolute; inset:0; background:linear-gradient(135deg,#0e7490,#10b981); background-size:cover; background-position:center; transform:scale(1.05); animation:kenburns 20s ease-out forwards; }
-  @keyframes kenburns{ from{transform:scale(1.05)} to{transform:scale(1.16)} }
+  .hero-media{ position:absolute; inset:0; background:linear-gradient(135deg,#0e7490,#10b981); background-size:cover; background-position:center; transform:scale(1.04); animation:kenburns 22s ease-out forwards; }
+  @keyframes kenburns{ from{transform:scale(1.04)} to{transform:scale(1.09)} }
   .hero-grad{ position:absolute; inset:0; background:linear-gradient(180deg,rgba(15,12,8,0) 25%,rgba(15,12,8,.5) 70%,rgba(15,12,8,.86) 100%); }
   .hero-inner{ position:relative; z-index:2; width:100%; max-width:900px; margin:0 auto; padding:26px 20px 58px; color:#fff; }
   .hero-flag{ font-size:56px; line-height:1; filter:drop-shadow(0 5px 12px rgba(0,0,0,.45)); }
@@ -36,15 +35,15 @@
   @media(min-width:720px){ .hero{ min-height:58vh; } .hero h1{ font-size:60px; } }
 
   .card{ background:var(--card); border:1px solid var(--line); border-radius:var(--radius); padding:22px; box-shadow:var(--shadow); }
-  .q,#visitedCard,#letsgoCard{ margin-top:-44px; position:relative; z-index:5; }
+  .q,#visitedCard,#letsgoCard,#landingCard{ margin-top:-44px; position:relative; z-index:5; }
+  #landingCard{ text-align:center; }
   .q{ text-align:center; } .q h2{ margin:0 0 16px; }
   .q .btns{ display:flex; gap:10px; justify-content:center; flex-wrap:wrap; }
   .celebrate{ text-align:center; font-weight:700; font-size:22px; color:var(--green); margin:0; }
   .btn{ display:inline-flex; align-items:center; justify-content:center; gap:8px; border:none; cursor:pointer; font-family:Inter; font-size:15px; font-weight:600; padding:14px 22px; border-radius:999px; text-decoration:none; transition:transform .16s ease, box-shadow .22s ease; }
   .btn:active{ transform:scale(.97); }
   .btn-yes{ background:linear-gradient(135deg,#10b981,#059669); color:#fff; box-shadow:0 12px 22px -10px rgba(16,185,129,.8); }
-  .btn-ghost{ background:#fff; color:var(--ink); border:1px solid var(--line); }
-  .btn-ghost:hover{ background:#f4efe6; }
+  .btn-ghost{ background:#fff; color:var(--ink); border:1px solid var(--line); } .btn-ghost:hover{ background:#f4efe6; }
   .btn-lets{ width:100%; background:linear-gradient(135deg,#0f766e,#134e4a); color:#fff; font-size:17px; padding:17px; box-shadow:0 16px 32px -12px rgba(15,118,110,.6); }
   .btn-yes:hover,.btn-lets:hover,.btn-fly:hover{ transform:translateY(-2px); }
   .btn-fly{ background:linear-gradient(135deg,#0e7490,#155e75); color:#fff; white-space:nowrap; box-shadow:0 12px 22px -10px rgba(14,116,144,.7); }
@@ -57,9 +56,7 @@
   .tile:hover{ transform:translateY(-5px); box-shadow:0 24px 46px -18px rgba(40,30,15,.35); }
   .tile .img{ aspect-ratio:4/3; background:linear-gradient(135deg,#d6ccb8,#a7c4bc); background-size:cover; background-position:center; transition:transform .55s ease; }
   .tile:hover .img{ transform:scale(1.07); }
-  .tile .body{ padding:14px 15px 16px; }
-  .tile h4{ margin:0 0 6px; font-size:17px; }
-  .tile p{ margin:0; font-size:13px; color:var(--muted); line-height:1.55; }
+  .tile .body{ padding:14px 15px 16px; } .tile h4{ margin:0 0 6px; font-size:17px; } .tile p{ margin:0; font-size:13px; color:var(--muted); line-height:1.55; }
   .gem-badge{ position:absolute; top:10px; left:10px; background:rgba(180,83,9,.96); color:#fff; font-size:11px; font-weight:700; padding:4px 10px; border-radius:999px; }
 
   .feature{ display:grid; grid-template-columns:1fr 1.1fr; gap:22px; align-items:center; }
@@ -71,6 +68,12 @@
   .chip{ background:#f4efe6; border:1px solid var(--line); border-radius:999px; padding:8px 14px; font-size:13px; }
   .chip span{ color:var(--muted); } .chip b{ color:var(--ink); font-weight:600; }
 
+  .factgrid{ display:grid; grid-template-columns:1fr 1fr; gap:14px; }
+  @media(max-width:640px){ .factgrid{ grid-template-columns:1fr; } }
+  .factcard{ display:flex; gap:14px; align-items:flex-start; background:var(--card); border:1px solid var(--line); border-radius:16px; padding:18px; box-shadow:var(--shadow); }
+  .factnum{ font-family:Fraunces; font-weight:700; font-size:26px; color:var(--accent); opacity:.55; line-height:1; }
+  .factcard p{ margin:0; font-size:14.5px; line-height:1.6; color:#3a352c; }
+
   .holidays{ list-style:none; padding:0; margin:0; display:grid; gap:8px; }
   .holidays li{ display:flex; justify-content:space-between; gap:12px; padding:11px 15px; background:#f4efe6; border:1px solid var(--line); border-radius:12px; font-size:14px; }
   .holidays .hd{ color:var(--muted); white-space:nowrap; }
@@ -79,14 +82,14 @@
   @media(max-width:640px){ .explore{ grid-template-columns:1fr; } }
   .xcard{ display:flex; flex-direction:column; text-decoration:none; color:#fff; border-radius:20px; padding:22px; min-height:160px; box-shadow:var(--shadow); transition:transform .2s ease; }
   .xcard:hover{ transform:translateY(-4px); }
-  .xcard-ao{ background:linear-gradient(135deg,#1f2a2e,#31504a); }
-  .xcard-cr{ background:linear-gradient(135deg,#7c2d12,#b45309); }
+  .xcard-ao{ background:linear-gradient(135deg,#1f2a2e,#31504a); } .xcard-cr{ background:linear-gradient(135deg,#7c2d12,#b45309); }
   .xtag{ font-size:12px; letter-spacing:.14em; text-transform:uppercase; font-weight:700; opacity:.85; }
-  .xcard h3{ margin:10px 0 6px; font-size:21px; }
-  .xcard p{ margin:0 0 auto; font-size:14px; opacity:.92; }
-  .xgo{ margin-top:14px; font-weight:600; }
+  .xcard h3{ margin:10px 0 6px; font-size:21px; } .xcard p{ margin:0 0 auto; font-size:14px; opacity:.92; } .xgo{ margin-top:14px; font-weight:600; }
 
-  .skeleton{ background:linear-gradient(90deg,# efe9dd 25%,#e4dccc 37%,#efe9dd 63%); background:linear-gradient(90deg,#efe9dd 25%,#e4dccc 37%,#efe9dd 63%); background-size:400% 100%; animation:shimmer 1.4s infinite; }
+  .fab{ position:fixed; right:16px; bottom:16px; z-index:60; background:linear-gradient(135deg,#b45309,#f59e0b); color:#fff; font-weight:600; font-size:14px; padding:13px 18px; border-radius:999px; box-shadow:0 12px 26px -8px rgba(180,83,9,.65); cursor:pointer; text-decoration:none; }
+  .fab:hover{ transform:translateY(-2px); }
+
+  .skeleton{ background:linear-gradient(90deg,#efe9dd 25%,#e4dccc 37%,#efe9dd 63%); background-size:400% 100%; animation:shimmer 1.4s infinite; }
   @keyframes shimmer{ 0%{background-position:100% 0} 100%{background-position:0 0} }
   .sk-line{ height:12px; border-radius:6px; margin:9px 0; } .sk-line.short{ width:60%; }
   .reveal{ opacity:0; transform:translateY(16px); transition:opacity .6s cubic-bezier(.2,.7,.2,1), transform .6s cubic-bezier(.2,.7,.2,1); }
@@ -107,21 +110,18 @@
   </header>
 
   <main class="wrap">
-    <section class="card q reveal hidden" id="questionCard">
-      <h2 id="questionText">Have you been here?</h2>
-      <div class="btns">
-        <button class="btn btn-yes" id="yesBtn">Yes, I've been ✅</button>
-        <button class="btn btn-ghost" id="noBtn">Not yet ✈️</button>
-      </div>
-    </section>
+    <section class="card q reveal hidden" id="questionCard"><h2 id="questionText">Have you been here?</h2>
+      <div class="btns"><button class="btn btn-yes" id="yesBtn">Yes, I've been ✅</button><button class="btn btn-ghost" id="noBtn">Not yet ✈️</button></div></section>
     <section class="card reveal hidden" id="visitedCard"><p class="celebrate">🎉 You've been to <span id="visitedName"></span>!</p></section>
     <section class="reveal hidden" id="letsgoCard"><button class="btn btn-lets" id="letsgoBtn">Let's go — explore this place ✨</button></section>
+    <section class="card reveal hidden" id="landingCard"><span class="kicker">Where to next?</span><h2>Pick a tag — or let fate decide</h2>
+      <button class="btn btn-lets" id="surpriseBig" style="max-width:320px;margin:0 auto">🎲 Surprise me</button></section>
 
     <section class="card reveal" id="mapCard"><span class="kicker">Your journey</span><h2 id="mapTitle">Your travel map</h2><div id="map"></div></section>
-
     <div id="content" class="hidden"></div>
   </main>
   <footer>A little travel gift 💚</footer>
+  <a class="fab" id="surpriseBtn">🎲 Surprise me</a>
 
   <script src="https://cdn.jsdelivr.net/npm/jsvectormap@1.5.3/dist/js/jsvectormap.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/jsvectormap@1.5.3/dist/maps/world.js"></script>
@@ -146,33 +146,46 @@
     PE:["Machu Picchu","Cusco","Sacsayhuamán","Lake Titicaca","Nazca Lines","Vinicunca"]
   };
   const HIDDEN_GEMS = {
-    JP:["Jigokudani Monkey Park","Shirakawa-gō","Nara Park"],
-    IT:["Sassi di Matera","Civita di Bagnoregio","Alberobello"],
-    FR:["Rocamadour","Gorges du Verdon","Carnac stones"],
-    ES:["Setenil de las Bodegas","Ronda","Montserrat (mountain)"],
-    US:["Antelope Canyon","Salvation Mountain","Winchester Mystery House"],
-    MX:["Las Pozas","Hierve el Agua","Guanajuato"],
-    GR:["Navagio","Monemvasia","Zagori"],
-    IN:["Hampi","Living root bridge","Jaisalmer"],
-    PE:["Choquequirao","Huacachina","Colca Canyon"]
+    JP:["Jigokudani Monkey Park","Shirakawa-gō","Nara Park"], IT:["Sassi di Matera","Civita di Bagnoregio","Alberobello"],
+    FR:["Rocamadour","Gorges du Verdon","Carnac stones"], ES:["Setenil de las Bodegas","Ronda","Montserrat (mountain)"],
+    US:["Antelope Canyon","Salvation Mountain","Winchester Mystery House"], MX:["Las Pozas","Hierve el Agua","Guanajuato"],
+    GR:["Navagio","Monemvasia","Zagori"], IN:["Hampi","Living root bridge","Jaisalmer"], PE:["Choquequirao","Huacachina","Colca Canyon"]
   };
-  const NAMES = {
-    JP:"Japan",IT:"Italy",FR:"France",ES:"Spain",DE:"Germany",GB:"United Kingdom",US:"United States",MX:"Mexico",
-    CA:"Canada",BR:"Brazil",AR:"Argentina",PE:"Peru",CL:"Chile",CO:"Colombia",AU:"Australia",NZ:"New Zealand",
-    TH:"Thailand",VN:"Vietnam",IN:"India",CN:"China",KR:"South Korea",ID:"Indonesia",MY:"Malaysia",SG:"Singapore",
-    PH:"Philippines",GR:"Greece",PT:"Portugal",NL:"Netherlands",BE:"Belgium",CH:"Switzerland",AT:"Austria",IE:"Ireland",
-    SE:"Sweden",NO:"Norway",DK:"Denmark",FI:"Finland",IS:"Iceland",PL:"Poland",CZ:"Czechia",HU:"Hungary",HR:"Croatia",
-    TR:"Turkey",EG:"Egypt",MA:"Morocco",ZA:"South Africa",KE:"Kenya",TZ:"Tanzania",AE:"United Arab Emirates",IL:"Israel",
-    JO:"Jordan",SA:"Saudi Arabia",QA:"Qatar",CR:"Costa Rica",PA:"Panama",CU:"Cuba",DO:"Dominican Republic",JM:"Jamaica",
-    EC:"Ecuador",BO:"Bolivia",UY:"Uruguay",RO:"Romania",BG:"Bulgaria",RS:"Serbia",LK:"Sri Lanka",NP:"Nepal",
-    KH:"Cambodia",LA:"Laos",MM:"Myanmar",FJ:"Fiji",MV:"Maldives"
+  const FOODS = {
+    JP:["Sushi","Ramen","Tempura","Sake","Matcha","Mochi"], IT:["Pizza","Pasta","Gelato","Espresso","Tiramisu","Risotto"],
+    FR:["Croissant","Baguette","Macaron","French wine","Crêpe","Ratatouille"], ES:["Paella","Tapas","Sangria","Jamón ibérico","Churros","Gazpacho"],
+    GB:["Fish and chips","Full breakfast","Afternoon tea","Sunday roast","Shepherd's pie","Pimm's"],
+    US:["Hamburger","Barbecue","Apple pie","Hot dog","Bourbon whiskey","Clam chowder"],
+    MX:["Taco","Guacamole","Tamale","Tequila","Mole sauce","Churro"], TH:["Pad thai","Tom yum","Green curry","Mango sticky rice","Thai iced tea","Som tam"],
+    GR:["Souvlaki","Moussaka","Gyro (food)","Greek salad","Ouzo","Baklava"], IN:["Biryani","Butter chicken","Masala chai","Samosa","Dosa","Lassi"],
+    AU:["Meat pie (Australia and New Zealand)","Vegemite","Lamington","Pavlova","Flat white","Barramundi"],
+    BR:["Feijoada","Caipirinha","Pão de queijo","Brigadeiro","Açaí na tigela","Coxinha"],
+    PT:["Pastel de nata","Bacalhau","Port wine","Francesinha","Piri piri","Caldo verde"],
+    EG:["Kushari","Ful medames","Falafel","Molokhia","Hibiscus tea","Baklava"], PE:["Ceviche","Lomo saltado","Pisco sour","Ají de gallina","Anticucho","Causa"]
   };
+  const FACTS = {
+    JP:["Japan has more than 5 million vending machines, selling everything from hot coffee to fresh flowers.","Kongō Gumi operated for over 1,400 years — the world's oldest continuously running company.","Slurping your noodles loudly is a compliment to the chef."],
+    IT:["Italy has more UNESCO World Heritage Sites than any other country on Earth.","Italians eat roughly 25 kg of pasta per person a year — more than anyone else.","The Colosseum once held between 50,000 and 80,000 spectators."],
+    FR:["France is the most-visited country in the world, with around 90 million tourists a year.","The Eiffel Tower can grow about 15 cm taller in summer as its iron expands.","France produces well over 1,000 distinct types of cheese."],
+    ES:["Every August, Buñol hosts La Tomatina — a battle fought with over 100 tons of tomatoes.","Barcelona's Sagrada Família has been under construction since 1882.","Spaniards traditionally eat 12 grapes at the stroke of midnight on New Year's Eve."],
+    GB:["'Big Ben' is the nickname of the bell — the tower is Elizabeth Tower.","The London Underground (1863) is the world's oldest underground railway.","Nowhere in the UK is more than about 115 km from the sea."],
+    US:["The United States has no official national language at the federal level.","Alaska's coastline is longer than that of all other US states combined.","The Library of Congress is the largest library in the world."],
+    MX:["Mexico City is slowly sinking — by as much as 50 cm a year in places.","Chocolate, chili peppers, and corn were all introduced to the world by ancient Mexico.","The Americas' first printing press was set up in Mexico City in 1539."],
+    TH:["Bangkok's full ceremonial name is the longest place name in the world.","Thailand is the only Southeast Asian nation never colonized by a European power.","Red Bull was inspired by a Thai original called Krating Daeng."],
+    GR:["Greece has around 6,000 islands and islets, but only about 200 are inhabited.","Democracy was born in Athens roughly 2,500 years ago.","Many Greeks celebrate their 'name day' more than their birthday."],
+    IN:["India has the largest postal network on Earth, with over 150,000 post offices.","The number zero and the game of chess both trace their roots to India.","The Kumbh Mela is the largest human gathering in the world."],
+    AU:["Australia is wider than the Moon's diameter (about 4,000 km across).","There are more kangaroos than people in Australia.","The Great Barrier Reef is the largest living structure on Earth."],
+    BR:["Brazil has won the FIFA World Cup a record five times.","About 60% of the Amazon rainforest lies within Brazil.","The country is named after brazilwood, a tree prized for its red dye."],
+    PT:["Portugal's borders have barely changed since 1139 — one of Europe's oldest nations.","The Anglo-Portuguese Alliance (1386) is the world's oldest active alliance.","Portuguese traders introduced tempura to Japan in the 16th century."],
+    EG:["The Great Pyramid was the tallest human-made structure for around 3,800 years.","Cleopatra lived closer in time to the Moon landing than to the pyramids' construction.","Ancient Egyptians developed one of the first 365-day calendars."],
+    PE:["Peru grows more than 4,000 varieties of potato.","Machu Picchu was built without the wheel, iron tools, or mortar.","The Nazca Lines can only be fully appreciated from the air."]
+  };
+  const NAMES = {JP:"Japan",IT:"Italy",FR:"France",ES:"Spain",DE:"Germany",GB:"United Kingdom",US:"United States",MX:"Mexico",CA:"Canada",BR:"Brazil",AR:"Argentina",PE:"Peru",CL:"Chile",CO:"Colombia",AU:"Australia",NZ:"New Zealand",TH:"Thailand",VN:"Vietnam",IN:"India",CN:"China",KR:"South Korea",ID:"Indonesia",MY:"Malaysia",SG:"Singapore",PH:"Philippines",GR:"Greece",PT:"Portugal",NL:"Netherlands",BE:"Belgium",CH:"Switzerland",AT:"Austria",IE:"Ireland",SE:"Sweden",NO:"Norway",DK:"Denmark",FI:"Finland",IS:"Iceland",PL:"Poland",CZ:"Czechia",HU:"Hungary",HR:"Croatia",TR:"Turkey",EG:"Egypt",MA:"Morocco",ZA:"South Africa",KE:"Kenya",TZ:"Tanzania",AE:"United Arab Emirates",IL:"Israel",JO:"Jordan",SA:"Saudi Arabia",QA:"Qatar",CR:"Costa Rica",PA:"Panama",CU:"Cuba",DO:"Dominican Republic",JM:"Jamaica",EC:"Ecuador",BO:"Bolivia",UY:"Uruguay",RO:"Romania",BG:"Bulgaria",RS:"Serbia",LK:"Sri Lanka",NP:"Nepal",KH:"Cambodia",LA:"Laos",MM:"Myanmar",FJ:"Fiji",MV:"Maldives"};
   // ======================
 
   const $ = id => document.getElementById(id);
   const heroMedia=$('heroMedia'), flagEl=$('flag'), nameEl=$('countryName'), taglineEl=$('tagline'), badgeEl=$('badge'),
-        questionCard=$('questionCard'), visitedCard=$('visitedCard'), letsgoCard=$('letsgoCard'), mapCard=$('mapCard'), content=$('content');
-
+        questionCard=$('questionCard'), visitedCard=$('visitedCard'), letsgoCard=$('letsgoCard'), landingCard=$('landingCard'), mapCard=$('mapCard'), content=$('content');
   function getVisited(){ try{return JSON.parse(localStorage.getItem('visited')||'[]')}catch(e){return[]} }
   function saveVisited(l){ localStorage.setItem('visited', JSON.stringify(l)); }
   function flagFromCode(cc){ return /^[A-Z]{2}$/.test(cc)? cc.replace(/./g,c=>String.fromCodePoint(127397+c.charCodeAt())) : "🌍"; }
@@ -180,38 +193,39 @@
   function revealAll(root,step=80){ root.querySelectorAll('.reveal').forEach((n,i)=>reveal(n,i*step)); }
   function esc(s){ return (s||'').toString().replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
   function escA(s){ return esc(s).replace(/"/g,'&quot;'); }
-  function setBg(node,url,fb){ if(!node) return;
-    const t=url||fb; if(!t){ node.classList.remove('skeleton'); return; }
-    const im=new Image();
-    im.onload=()=>{ node.style.backgroundImage=`url("${t}")`; node.classList.remove('skeleton'); };
-    im.onerror=()=>{ if(fb&&fb!==t){ setBg(node,fb,null); } else { node.classList.remove('skeleton'); } };
-    im.src=t; }
-  function imgURLs(s,want){ if(!s) return {main:null,fb:null};
-    const t=s.thumbnail,o=s.originalimage;
-    if(t&&t.source){ const cap=(o&&o.width)?o.width:(t.width||want); const size=Math.max(200,Math.min(want,cap));
-      return { main:t.source.replace(/\/\d+px-/,'/'+size+'px-'), fb:t.source }; }
-    if(o&&o.source) return {main:o.source, fb:o.source};
-    return {main:null,fb:null}; }
+  function setBg(node,url,fb){ if(!node) return; const t=url||fb; if(!t){ node.classList.remove('skeleton'); return; }
+    const im=new Image(); im.onload=()=>{ node.style.backgroundImage=`url("${t}")`; node.classList.remove('skeleton'); };
+    im.onerror=()=>{ if(fb&&fb!==t){ setBg(node,fb,null); } else { node.classList.remove('skeleton'); } }; im.src=t; }
+  function imgURLs(s,want){ if(!s) return {main:null,fb:null}; const t=s.thumbnail,o=s.originalimage;
+    if(t&&t.source){ const cap=(o&&o.width)?o.width:(t.width||want); const size=Math.max(200,Math.min(want,cap)); return {main:t.source.replace(/\/\d+px-/,'/'+size+'px-'), fb:t.source}; }
+    if(o&&o.source) return {main:o.source,fb:o.source}; return {main:null,fb:null}; }
+  function heroURLs(s){ if(!s) return {main:null,fb:null}; const o=s.originalimage,t=s.thumbnail;
+    if(t&&t.source){ const cap=(o&&o.width)?o.width:(t.width||1600); const size=Math.min(1600,cap); return {main:t.source.replace(/\/\d+px-/,'/'+size+'px-'), fb:(o&&o.source)||t.source}; }
+    if(o&&o.source) return {main:o.source,fb:o.source}; return {main:null,fb:null}; }
+  function pickHeroSummary(sums){ let best=null,bw=0; for(const s of sums){ if(!s) continue; const w=(s.originalimage&&s.originalimage.width)||(s.thumbnail&&s.thumbnail.width)||0; if(w>bw){bw=w;best=s;} } return best; }
   function hydrateImages(root){ root.querySelectorAll('[data-main]').forEach(n=>setBg(n, n.dataset.main||null, n.dataset.fb||null)); }
   async function wikiSummary(title){ try{ const r=await fetch('https://en.wikipedia.org/api/rest_v1/page/summary/'+encodeURIComponent(title.replace(/ /g,'_'))); return r.ok?await r.json():null; }catch(e){ return null; } }
+  function offsetFromTz(tz){ if(!tz) return null; if(tz==='UTC') return 0; const m=/UTC([+-])(\d{2}):(\d{2})/.exec(tz); if(!m) return null; return (m[1]==='-'?-1:1)*(parseInt(m[2])*60+parseInt(m[3])); }
+  function tickClock(off){ const el=$('localClock'); if(!el) return; const now=new Date(); const loc=new Date(now.getTime()+now.getTimezoneOffset()*60000+off*60000); el.textContent=loc.toLocaleTimeString('en-US',{hour:'2-digit',minute:'2-digit'}); }
 
   const code=(new URLSearchParams(location.search).get('c')||'').toUpperCase().trim();
   const visited=getVisited();
-  const map=new jsVectorMap({ selector:'#map', map:'world', zoomButtons:true, regionsSelectable:false,
-    regionStyle:{ initial:{fill:'#e2ddd0'}, selected:{fill:'#10b981'} }, selectedRegions:visited });
+  const map=new jsVectorMap({ selector:'#map', map:'world', zoomButtons:true, regionsSelectable:false, regionStyle:{ initial:{fill:'#e2ddd0'}, selected:{fill:'#10b981'} }, selectedRegions:visited });
   reveal($('heroInner'),80); reveal(mapCard,220);
+
+  function surprise(){ const pool=Object.keys(HIGHLIGHTS).filter(k=>k!==code); const list=pool.length?pool:Object.keys(HIGHLIGHTS); location.href='?c='+list[Math.floor(Math.random()*list.length)]; }
+  $('surpriseBtn').onclick=surprise; if($('surpriseBig')) $('surpriseBig').onclick=surprise;
 
   if(!code){
     nameEl.textContent="Your Travel Map";
     taglineEl.textContent=visited.length?`${visited.length} ${visited.length===1?'country':'countries'} explored 🌱`:"Tap a tag to begin ✈️";
-    setBg(heroMedia,null);
+    setBg(heroMedia,null); landingCard.classList.remove('hidden'); reveal(landingCard,120);
   } else { loadCountry(code); }
 
   async function loadCountry(cc){
-    let name=NAMES[cc]||null, capital=null, region="—", population="—", languages="—", currencies="—",
-        area=null, calling=null, driving=null, timezone=null, currencyCode=null, apiOk=false;
+    let name=NAMES[cc]||null, capital=null, region="—", population="—", languages="—", currencies="—", area=null, calling=null, driving=null, timezone=null, currencyCode=null, lat=null, lng=null, apiOk=false;
     try{
-      const res=await fetch(`https://restcountries.com/v3.1/alpha/${cc}?fields=name,capital,region,subregion,population,languages,currencies,area,timezones,car,idd`);
+      const res=await fetch(`https://restcountries.com/v3.1/alpha/${cc}?fields=name,capital,region,subregion,population,languages,currencies,area,timezones,car,idd,latlng,capitalInfo`);
       if(res.ok){ const j=await res.json(); const d=Array.isArray(j)?j[0]:j;
         if(d&&d.name){ apiOk=true; name=d.name.common; capital=(d.capital&&d.capital[0])||null;
           region=d.region+(d.subregion?` · ${d.subregion}`:""); population=d.population?d.population.toLocaleString():"—";
@@ -219,121 +233,89 @@
           if(d.currencies){ currencyCode=Object.keys(d.currencies)[0]; currencies=Object.values(d.currencies).map(c=>c.symbol?`${c.name} (${c.symbol})`:c.name).join(", "); }
           area=d.area?Math.round(d.area).toLocaleString():null;
           calling=(d.idd&&d.idd.root)?(d.idd.root+((d.idd.suffixes&&d.idd.suffixes.length===1)?d.idd.suffixes[0]:"")):null;
-          driving=(d.car&&d.car.side)?d.car.side:null;
-          timezone=(d.timezones&&d.timezones.length)?d.timezones[0]:null;
+          driving=(d.car&&d.car.side)?d.car.side:null; timezone=(d.timezones&&d.timezones.length)?d.timezones[0]:null;
+          const ci=d.capitalInfo&&d.capitalInfo.latlng; lat=ci?ci[0]:(d.latlng?d.latlng[0]:null); lng=ci?ci[1]:(d.latlng?d.latlng[1]:null);
         } }
     }catch(e){}
-
     if(!name){ nameEl.textContent=`Couldn't find "${cc}"`; taglineEl.textContent="That doesn't look like a valid 2-letter country code."; setBg(heroMedia,null); return; }
 
     const already=visited.includes(cc);
     flagEl.textContent=flagFromCode(cc); nameEl.textContent=name; taglineEl.textContent=capital||"";
     if(already){ badgeEl.textContent="✓ Visited"; badgeEl.classList.remove('hidden'); }
 
-    const ctx={cc,name,capital:capital||name,region,population,languages,currencies,area,calling,driving,timezone,currencyCode,apiOk};
+    const ctx={cc,name,capital:capital||name,region,population,languages,currencies,area,calling,driving,timezone,currencyCode,lat,lng,apiOk};
     renderContent(ctx); prepareContent(ctx);
+    const off=offsetFromTz(timezone); if(off!=null){ tickClock(off); setInterval(()=>tickClock(off),20000); }
 
     if(already){ $('visitedName').textContent=name; visitedCard.classList.remove('hidden'); reveal(visitedCard,120); showContent(); }
-    else{
-      $('questionText').textContent=`Have you been to ${name}?`; questionCard.classList.remove('hidden'); reveal(questionCard,120);
+    else{ $('questionText').textContent=`Have you been to ${name}?`; questionCard.classList.remove('hidden'); reveal(questionCard,120);
       $('yesBtn').onclick=()=>{ const l=getVisited(); if(!l.includes(cc))l.push(cc); saveVisited(l); location.reload(); };
       $('noBtn').onclick=()=>{ questionCard.classList.add('hidden'); letsgoCard.classList.remove('hidden'); reveal(letsgoCard,40); };
       $('letsgoBtn').onclick=()=>{ letsgoCard.classList.add('hidden'); showContent(); };
     }
   }
   function showContent(){ content.classList.remove('hidden'); revealAll(content,80); }
-
-  function storyMarkup(key,kicker,heading,reverse){
-    return `<section class="reveal" id="${key}Section"><div class="feature${reverse?' reverse':''}">
-      <div class="fimg skeleton" id="${key}Img"></div>
-      <div><span class="kicker">${kicker}</span><h2>${heading}</h2><p class="prose" id="${key}Text">Loading…</p></div></div></section>`;
-  }
+  function storyMarkup(key,kicker,heading,reverse){ return `<section class="reveal" id="${key}Section"><div class="feature${reverse?' reverse':''}"><div class="fimg skeleton" id="${key}Img"></div><div><span class="kicker">${kicker}</span><h2>${heading}</h2><p class="prose" id="${key}Text">Loading…</p></div></div></section>`; }
+  function tileSkeletons(n){ let s=''; for(let i=0;i<n;i++) s+=`<div class="tile"><div class="img skeleton"></div><div class="body"><div class="sk-line skeleton"></div><div class="sk-line short skeleton"></div></div></div>`; return s; }
+  function renderTiles(list,sums){ return list.map((item,i)=>{ const p=(typeof item==='string')?{t:item,gem:false}:item; const s=sums[i]; const title=(s&&s.title)||p.t;
+      let desc=(s&&s.extract)||""; if(desc.length>150) desc=desc.slice(0,150).replace(/\s+\S*$/,'')+'…';
+      const u=imgURLs(s,700); const link=(s&&s.content_urls&&s.content_urls.desktop&&s.content_urls.desktop.page)||('https://en.wikipedia.org/wiki/'+encodeURIComponent(p.t.replace(/ /g,'_')));
+      return `<a class="tile" href="${escA(link)}" target="_blank" rel="noopener"><div class="img skeleton" data-main="${escA(u.main||'')}" data-fb="${escA(u.fb||'')}"></div>${p.gem?'<span class="gem-badge">✨ Hidden gem</span>':''}<div class="body"><h4>${esc(title)}</h4><p>${esc(desc)}</p></div></a>`; }).join(''); }
 
   function renderContent(ctx){
     const flightsUrl='https://www.google.com/travel/flights?q='+encodeURIComponent(`Flights from ${HOME_CITY} to ${ctx.name}`);
-    const aoSlug=ctx.name.toLowerCase().replace(/[^a-z0-9]+/g,'-').replace(/(^-|-$)/g,'');
-    const crName=ctx.name.replace(/\s+/g,'');
-    const nP=((HIGHLIGHTS[ctx.cc]||[]).length+(HIDDEN_GEMS[ctx.cc]||[]).length)||6;
-    let sk=''; for(let i=0;i<nP;i++) sk+=`<div class="tile"><div class="img skeleton"></div><div class="body"><div class="sk-line skeleton"></div><div class="sk-line short skeleton"></div></div></div>`;
-    const facts = ctx.apiOk ? `
-      <section class="card reveal" id="factsCard"><span class="kicker">Quick facts</span><h2>Good to know</h2>
+    const aoSlug=ctx.name.toLowerCase().replace(/[^a-z0-9]+/g,'-').replace(/(^-|-$)/g,''); const crName=ctx.name.replace(/\s+/g,'');
+    const nP=((HIGHLIGHTS[ctx.cc]||[]).length+(HIDDEN_GEMS[ctx.cc]||[]).length)||6; const nF=(FOODS[ctx.cc]||[]).length;
+    const clockChip = offsetFromTz(ctx.timezone)!=null ? `<div class="chip"><span>Local time</span> <b id="localClock">--:--</b></div>` : '';
+    const facts = ctx.apiOk ? `<section class="card reveal" id="factsCard"><span class="kicker">Quick facts</span><h2>Good to know</h2>
         <div class="chips" id="factsChips">
-          <div class="chip"><span>Capital</span> <b>${esc(ctx.capital)}</b></div>
-          <div class="chip"><span>Region</span> <b>${esc(ctx.region)}</b></div>
-          <div class="chip"><span>Population</span> <b>${esc(ctx.population)}</b></div>
-          ${ctx.area?`<div class="chip"><span>Area</span> <b>${esc(ctx.area)} km²</b></div>`:''}
-          <div class="chip"><span>Languages</span> <b>${esc(ctx.languages)}</b></div>
-          <div class="chip"><span>Currency</span> <b>${esc(ctx.currencies)}</b></div>
-          ${ctx.calling?`<div class="chip"><span>Dial code</span> <b>${esc(ctx.calling)}</b></div>`:''}
-          ${ctx.driving?`<div class="chip"><span>Driving</span> <b>${esc(ctx.driving)} side</b></div>`:''}
-          ${ctx.timezone?`<div class="chip"><span>Time zone</span> <b>${esc(ctx.timezone)}</b></div>`:''}
+          <div class="chip"><span>Capital</span> <b>${esc(ctx.capital)}</b></div><div class="chip"><span>Region</span> <b>${esc(ctx.region)}</b></div>
+          <div class="chip"><span>Population</span> <b>${esc(ctx.population)}</b></div>${ctx.area?`<div class="chip"><span>Area</span> <b>${esc(ctx.area)} km²</b></div>`:''}
+          <div class="chip"><span>Languages</span> <b>${esc(ctx.languages)}</b></div><div class="chip"><span>Currency</span> <b>${esc(ctx.currencies)}</b></div>
+          ${ctx.calling?`<div class="chip"><span>Dial code</span> <b>${esc(ctx.calling)}</b></div>`:''}${ctx.driving?`<div class="chip"><span>Driving</span> <b>${esc(ctx.driving)} side</b></div>`:''}
+          ${ctx.timezone?`<div class="chip"><span>Time zone</span> <b>${esc(ctx.timezone)}</b></div>`:''}${clockChip}
         </div></section>` : '';
+    const factStories=(FACTS[ctx.cc]||[]);
+    const didYouKnow = factStories.length ? `<section class="reveal" id="factsStorySection"><span class="kicker">Curiosities</span><h2>Did you know?</h2>
+        <div class="factgrid">${factStories.map((f,i)=>`<div class="factcard"><div class="factnum">${String(i+1).padStart(2,'0')}</div><p>${esc(f)}</p></div>`).join('')}</div></section>` : '';
+    const foodSection = nF ? `<section class="reveal" id="foodGridSection"><span class="kicker">Eat &amp; drink</span><h2>A taste of ${esc(ctx.name)}</h2><div class="grid" id="foodGrid">${tileSkeletons(nF)}</div></section>` : '';
     content.innerHTML=`
-      <section class="card cta reveal" id="flightsCard"><div><span class="kicker">Getting there</span><h2 style="margin:2px 0">Fly from ${esc(HOME_CITY)}</h2><p class="muted">Live prices on Google Flights</p></div>
-        <a class="btn btn-fly" href="${flightsUrl}" target="_blank" rel="noopener">✈️ See flights</a></section>
+      <section class="card cta reveal" id="flightsCard"><div><span class="kicker">Getting there</span><h2 style="margin:2px 0">Fly from ${esc(HOME_CITY)}</h2><p class="muted">Live prices on Google Flights</p></div><a class="btn btn-fly" href="${flightsUrl}" target="_blank" rel="noopener">✈️ See flights</a></section>
       <section class="reveal" id="aboutSection"><span class="kicker">Overview</span><h2>About ${esc(ctx.name)}</h2><p class="prose" id="aboutText">Loading…</p></section>
-      <section class="reveal" id="placesSection"><span class="kicker">Wondrous places</span><h2>Must-see &amp; hidden gems</h2>
-        <div class="grid" id="placesGrid">${sk}</div><p class="prose hidden" id="placesFallback"></p></section>
+      <section class="reveal" id="placesSection"><span class="kicker">Wondrous places</span><h2>Must-see &amp; hidden gems</h2><div class="grid" id="placesGrid">${tileSkeletons(nP)}</div><p class="prose hidden" id="placesFallback"></p></section>
       ${storyMarkup('history','History','Through the ages',false)}
       ${storyMarkup('culture','Culture','Life &amp; traditions',true)}
-      ${storyMarkup('cuisine','Cuisine','What to eat',false)}
+      ${storyMarkup('cuisine','Food &amp; Drink','Taste the culture',false)}
+      ${foodSection}
+      ${didYouKnow}
       ${facts}
       <section class="card reveal hidden" id="holidaysSection"><span class="kicker">Calendar</span><h2>Public holidays this year</h2><ul class="holidays" id="holidaysList"></ul></section>
-      <section class="reveal" id="exploreSection"><span class="kicker">Explore deeper</span><h2>Down the rabbit hole</h2>
-        <div class="explore">
+      <section class="reveal" id="exploreSection"><span class="kicker">Explore deeper</span><h2>Down the rabbit hole</h2><div class="explore">
           <a class="xcard xcard-ao" href="https://www.atlasobscura.com/things-to-do/${encodeURIComponent(aoSlug)}" target="_blank" rel="noopener"><div class="xtag">Atlas Obscura</div><h3>Hidden wonders &amp; curious places</h3><p>Offbeat sights and the stories behind them.</p><span class="xgo">Discover →</span></a>
           <a class="xcard xcard-cr" href="https://www.countryreports.org/country/${encodeURIComponent(crName)}.htm" target="_blank" rel="noopener"><div class="xtag">CountryReports</div><h3>The full country report</h3><p>Culture, economy, geography &amp; daily life.</p><span class="xgo">Read report →</span></a>
         </div></section>`;
   }
-
-  function fillStory(key,sum,fallbackSum){
-    const sec=$(key+'Section'); if(!sec) return;
-    if(sum&&sum.extract){ $(key+'Text').textContent=sum.extract;
-      let u=imgURLs(sum,900); if(!u.main){ u=imgURLs(fallbackSum,900); } setBg($(key+'Img'),u.main,u.fb);
-    } else { sec.classList.add('hidden'); }
-  }
+  function fillStory(key,sum,fb){ const sec=$(key+'Section'); if(!sec) return; if(sum&&sum.extract){ $(key+'Text').textContent=sum.extract; let u=imgURLs(sum,900); if(!u.main) u=imgURLs(fb,900); setBg($(key+'Img'),u.main,u.fb); } else { sec.classList.add('hidden'); } }
 
   async function prepareContent(ctx){
-    const titles=(HIGHLIGHTS[ctx.cc]||[]), gems=(HIDDEN_GEMS[ctx.cc]||[]);
-    const allPlaces=titles.map(t=>({t,gem:false})).concat(gems.map(t=>({t,gem:true})));
-    const [countrySum,histSum,cultSum,cuisSum,placeSums]=await Promise.all([
-      wikiSummary(ctx.name), wikiSummary('History of '+ctx.name), wikiSummary('Culture of '+ctx.name),
-      wikiSummary('Cuisine of '+ctx.name), Promise.all(allPlaces.map(p=>wikiSummary(p.t)))
+    const places=(HIGHLIGHTS[ctx.cc]||[]).map(t=>({t,gem:false})).concat((HIDDEN_GEMS[ctx.cc]||[]).map(t=>({t,gem:true})));
+    const foods=(FOODS[ctx.cc]||[]);
+    const [countrySum,histSum,cultSum,cuisSum,placeSums,foodSums]=await Promise.all([
+      wikiSummary(ctx.name), wikiSummary('History of '+ctx.name), wikiSummary('Culture of '+ctx.name), wikiSummary('Cuisine of '+ctx.name),
+      Promise.all(places.map(p=>wikiSummary(p.t))), Promise.all(foods.map(t=>wikiSummary(t)))
     ]);
-
-    let hero=null,heroFb=null;
-    for(const s of placeSums){ const u=imgURLs(s,1400); if(u.main){hero=u.main;heroFb=u.fb;break;} }
-    if(!hero){ const u=imgURLs(countrySum,1400); hero=u.main; heroFb=u.fb; }
-    setBg(heroMedia,hero,heroFb);
-
+    const hs=pickHeroSummary(placeSums.concat([countrySum])); const hu=heroURLs(hs); setBg(heroMedia,hu.main,hu.fb);
     if($('aboutText')) $('aboutText').textContent=(countrySum&&countrySum.extract)||"Description unavailable right now.";
     fillStory('history',histSum,countrySum); fillStory('culture',cultSum,countrySum); fillStory('cuisine',cuisSum,countrySum);
-
-    const grid=$('placesGrid');
-    if(!allPlaces.length){ grid.classList.add('hidden'); const fb=$('placesFallback'); fb.classList.remove('hidden');
-      fb.innerHTML=`No hand-picked spots yet — <a href="https://en.wikivoyage.org/wiki/${encodeURIComponent(ctx.name.replace(/ /g,'_'))}" target="_blank" rel="noopener">browse ideas on Wikivoyage →</a>`;
-    } else {
-      grid.innerHTML=allPlaces.map((p,i)=>{ const s=placeSums[i]; const title=(s&&s.title)||p.t;
-        let desc=(s&&s.extract)||""; if(desc.length>150) desc=desc.slice(0,150).replace(/\s+\S*$/,'')+'…';
-        const u=imgURLs(s,700); const link=(s&&s.content_urls&&s.content_urls.desktop&&s.content_urls.desktop.page)||('https://en.wikipedia.org/wiki/'+encodeURIComponent(p.t.replace(/ /g,'_')));
-        return `<a class="tile" href="${escA(link)}" target="_blank" rel="noopener"><div class="img skeleton" data-main="${escA(u.main||'')}" data-fb="${escA(u.fb||'')}"></div>${p.gem?'<span class="gem-badge">✨ Hidden gem</span>':''}<div class="body"><h4>${esc(title)}</h4><p>${esc(desc)}</p></div></a>`;
-      }).join('');
-      hydrateImages(grid);
-    }
-
-    if(ctx.apiOk && ctx.currencyCode){ try{ const r=await fetch('https://open.er-api.com/v6/latest/USD'); const j=await r.json();
-      const rate=j&&j.rates&&j.rates[ctx.currencyCode];
-      if(rate){ const c=document.createElement('div'); c.className='chip'; c.innerHTML=`<span>Exchange</span> <b>1 USD ≈ ${(Math.round(rate*100)/100).toLocaleString()} ${esc(ctx.currencyCode)}</b>`; const box=$('factsChips'); if(box) box.appendChild(c); }
-    }catch(e){} }
-
-    try{ const year=new Date().getFullYear();
-      const r=await fetch(`https://date.nager.at/api/v3/PublicHolidays/${year}/${ctx.cc}`);
-      if(r.ok){ const hs=await r.json();
-        if(Array.isArray(hs)&&hs.length){ $('holidaysList').innerHTML=hs.slice(0,10).map(h=>{
-            const d=new Date(h.date+'T00:00:00'); const ds=d.toLocaleDateString('en-US',{month:'short',day:'numeric'});
-            return `<li><span>${esc(h.name)}</span><span class="hd">${ds}</span></li>`; }).join('');
-          const sec=$('holidaysSection'); sec.classList.remove('hidden'); reveal(sec); } }
-    }catch(e){}
+    if($('placesGrid')){ if(places.length){ $('placesGrid').innerHTML=renderTiles(places,placeSums); hydrateImages($('placesGrid')); }
+      else { $('placesGrid').classList.add('hidden'); const fb=$('placesFallback'); fb.classList.remove('hidden'); fb.innerHTML=`Browse ideas on <a href="https://en.wikivoyage.org/wiki/${encodeURIComponent(ctx.name.replace(/ /g,'_'))}" target="_blank" rel="noopener">Wikivoyage →</a>`; } }
+    if($('foodGrid') && foods.length){ $('foodGrid').innerHTML=renderTiles(foods,foodSums); hydrateImages($('foodGrid')); }
+    if(ctx.apiOk && ctx.currencyCode){ try{ const r=await fetch('https://open.er-api.com/v6/latest/USD'); const j=await r.json(); const rate=j&&j.rates&&j.rates[ctx.currencyCode];
+      if(rate){ const c=document.createElement('div'); c.className='chip'; c.innerHTML=`<span>Exchange</span> <b>1 USD ≈ ${(Math.round(rate*100)/100).toLocaleString()} ${esc(ctx.currencyCode)}</b>`; const box=$('factsChips'); if(box) box.appendChild(c); } }catch(e){} }
+    if(ctx.lat!=null && ctx.lng!=null){ try{ const r=await fetch(`https://api.open-meteo.com/v1/forecast?latitude=${ctx.lat}&longitude=${ctx.lng}&current=temperature_2m`); const j=await r.json(); const c=j&&j.current&&j.current.temperature_2m;
+      if(c!=null){ const f=Math.round(c*9/5+32); const chip=document.createElement('div'); chip.className='chip'; chip.innerHTML=`<span>Weather now</span> <b>${f}°F (${Math.round(c)}°C) in ${esc(ctx.capital)}</b>`; const box=$('factsChips'); if(box) box.appendChild(chip); } }catch(e){} }
+    try{ const y=new Date().getFullYear(); const r=await fetch(`https://date.nager.at/api/v3/PublicHolidays/${y}/${ctx.cc}`);
+      if(r.ok){ const hs2=await r.json(); if(Array.isArray(hs2)&&hs2.length){ $('holidaysList').innerHTML=hs2.slice(0,10).map(h=>{ const d=new Date(h.date+'T00:00:00'); return `<li><span>${esc(h.name)}</span><span class="hd">${d.toLocaleDateString('en-US',{month:'short',day:'numeric'})}</span></li>`; }).join(''); const sec=$('holidaysSection'); sec.classList.remove('hidden'); reveal(sec); } } }catch(e){}
   }
   </script>
 </body>
