@@ -38,9 +38,9 @@
   .map-count{ font-size:14px; color:var(--muted); margin:0 0 10px; } .map-count b{ color:var(--ink); font-family:Fraunces; }
   .map-progress{ height:9px; background:#ece5d8; border-radius:999px; overflow:hidden; margin-bottom:14px; } .map-progress-bar{ display:block; height:100%; width:0; border-radius:999px; background:linear-gradient(90deg,#10b981,#34d399); transition:width 1.1s cubic-bezier(.2,.7,.2,1); }
   .map-frame{ border-radius:16px; overflow:hidden; border:1px solid var(--line); background:radial-gradient(circle at 50% 25%, #eaf4f3, #d7e8e4 90%); box-shadow:inset 0 2px 22px rgba(20,60,55,.14); }
-  #map{ width:100%; height:380px; }
+  #map{ width:100%; height:clamp(300px,55vh,460px); }
   .legend{ display:flex; gap:18px; flex-wrap:wrap; justify-content:center; margin-top:14px; font-size:12.5px; color:var(--muted); } .legend .dot{ display:inline-block; width:11px; height:11px; border-radius:50%; margin-right:5px; vertical-align:-1px; } .dot.dv{ background:#10b981; } .dot.dh{ background:#f59e0b; } .dot.dn{ background:#d9ccb3; }
-  .jvm-zoom-btn{ background:#fffdf9; color:var(--accent); border:1px solid var(--line); border-radius:8px; width:26px; height:26px; line-height:22px; box-shadow:var(--shadow); left:12px; } .jvm-zoom-btn.jvm-zoomin{ top:12px; } .jvm-zoom-btn.jvm-zoomout{ top:46px; }
+  .jvm-zoom-btn{ background:#fffdf9; color:var(--accent); border:1px solid var(--line); border-radius:9px; width:36px; height:36px; line-height:32px; font-size:20px; text-align:center; box-shadow:var(--shadow); left:12px; } .jvm-zoom-btn.jvm-zoomin{ top:12px; } .jvm-zoom-btn.jvm-zoomout{ top:56px; }
   .grid{ display:grid; grid-template-columns:repeat(auto-fill,minmax(220px,1fr)); gap:16px; }
   .tile{ position:relative; display:block; text-decoration:none; color:inherit; background:var(--card); border:1px solid var(--line); border-radius:18px; overflow:hidden; box-shadow:var(--shadow); transition:transform .25s ease, box-shadow .25s ease; }
   .tile:hover{ transform:translateY(-5px); box-shadow:0 24px 46px -18px rgba(40,30,15,.35); }
@@ -68,6 +68,9 @@
   .sk-line{ height:12px; border-radius:6px; margin:9px 0; } .sk-line.short{ width:60%; }
   .reveal{ opacity:0; transform:translateY(16px); transition:opacity .6s cubic-bezier(.2,.7,.2,1), transform .6s cubic-bezier(.2,.7,.2,1); } .reveal.in{ opacity:1; transform:none; }
   footer{ text-align:center; color:var(--muted); font-size:12px; padding:36px 16px; }
+  .jvm-marker{ filter:drop-shadow(0 0 5px rgba(245,158,11,.95)); animation:markerpulse 1.9s ease-in-out infinite; }
+  @keyframes markerpulse{ 0%,100%{ opacity:.72 } 50%{ opacity:1 } }
+  @media(max-width:640px){ #map{ height:clamp(320px,58vh,520px); } .legend{ gap:12px 20px; font-size:13px; } .map-frame{ border-radius:14px; } .wrap{ padding:0 12px 90px; } }
 </style>
 </head>
 <body>
@@ -203,6 +206,8 @@
   const D=cc=>DATA[cc]||{};
   const PHRASES={"English":["Hello","Thank you"],"Spanish":["Hola","Gracias"],"French":["Bonjour","Merci"],"German":["Hallo","Danke"],"Italian":["Ciao","Grazie"],"Portuguese":["Olá","Obrigado"],"Dutch":["Hallo","Dank je"],"Japanese":["こんにちは (Konnichiwa)","ありがとう (Arigatō)"],"Korean":["안녕하세요 (Annyeonghaseyo)","감사합니다 (Gamsahamnida)"],"Chinese":["你好 (Nǐ hǎo)","谢谢 (Xièxiè)"],"Arabic":["مرحبا (Marhaban)","شكرا (Shukran)"],"Hindi":["नमस्ते (Namaste)","धन्यवाद (Dhanyavād)"],"Bengali":["নমস্কার (Nomoskar)","ধন্যবাদ (Dhonnobad)"],"Urdu":["السلام علیکم (Assalam-o-Alaikum)","شکریہ (Shukriya)"],"Russian":["Привет (Privet)","Спасибо (Spasibo)"],"Thai":["สวัสดี (Sawasdee)","ขอบคุณ (Khop khun)"],"Vietnamese":["Xin chào","Cảm ơn"],"Indonesian":["Halo","Terima kasih"],"Malay":["Helo","Terima kasih"],"Greek":["Γεια σας (Yia sas)","Ευχαριστώ (Efcharistó)"],"Turkish":["Merhaba","Teşekkür ederim"],"Polish":["Cześć","Dziękuję"],"Czech":["Ahoj","Děkuji"],"Slovak":["Ahoj","Ďakujem"],"Swedish":["Hej","Tack"],"Norwegian":["Hei","Takk"],"Danish":["Hej","Tak"],"Finnish":["Hei","Kiitos"],"Icelandic":["Halló","Takk"],"Hungarian":["Szia","Köszönöm"],"Romanian":["Bună","Mulțumesc"],"Bulgarian":["Здравей (Zdravey)","Благодаря (Blagodarya)"],"Croatian":["Bok","Hvala"],"Serbian":["Здраво (Zdravo)","Хвала (Hvala)"],"Ukrainian":["Привіт (Pryvit)","Дякую (Dyakuyu)"],"Hebrew":["שלום (Shalom)","תודה (Toda)"],"Persian":["سلام (Salām)","ممنون (Mamnoon)"],"Persian (Farsi)":["سلام (Salām)","ممنون (Mamnoon)"],"Swahili":["Jambo","Asante"],"Filipino":["Kumusta","Salamat"],"Tagalog":["Kumusta","Salamat"],"Afrikaans":["Hallo","Dankie"],"Amharic":["ሰላም (Selam)","አመሰግናለሁ (Ameseginalehu)"],"Nepali":["नमस्ते (Namaste)","धन्यवाद (Dhanyavād)"],"Khmer":["សួស្តី (Suostei)","អរគុណ (Arkoun)"],"Lao":["ສະບາຍດີ (Sabaidee)","ຂອບໃຈ (Khob chai)"],"Burmese":["မင်္ဂလာပါ (Mingalaba)","ကျေးဇူးတင်ပါတယ် (Kyay-zu-tin-ba-de)"],"Mongolian":["Сайн байна уу (Sain baina uu)","Баярлалаа (Bayarlalaa)"],"Albanian":["Përshëndetje","Faleminderit"],"Estonian":["Tere","Aitäh"],"Latvian":["Sveiki","Paldies"],"Lithuanian":["Labas","Ačiū"],"Slovene":["Zdravo","Hvala"],"Macedonian":["Здраво (Zdravo)","Благодарам (Blagodaram)"],"Georgian":["გამარჯობა (Gamarjoba)","გმადლობთ (Gmadlobt)"],"Armenian":["Բարև (Barev)","Շնորհակալություն (Shnorhakalut'yun)"],"Maltese":["Bonġu","Grazzi"],"Irish":["Dia duit","Go raibh maith agat"],"Somali":["Salaan","Mahadsanid"]};
   const NAMES={JP:"Japan",IT:"Italy",FR:"France",ES:"Spain",DE:"Germany",GB:"United Kingdom",US:"United States",MX:"Mexico",CA:"Canada",BR:"Brazil",AU:"Australia",TH:"Thailand",IN:"India",GR:"Greece",PT:"Portugal",EG:"Egypt",PE:"Peru"};
+  let _regionNames=null; try{ _regionNames=new Intl.DisplayNames(['en'],{type:'region'}); }catch(e){}
+  function countryName(cc){ if(NAMES[cc]) return NAMES[cc]; if(_regionNames){ try{ const n=_regionNames.of(cc); if(n&&n.toUpperCase()!==cc) return n; }catch(e){} } return null; }
 
   const $=id=>document.getElementById(id);
   const heroMedia=$('heroMedia'),flagEl=$('flag'),nameEl=$('countryName'),taglineEl=$('tagline'),badgeEl=$('badge'),questionCard=$('questionCard'),visitedCard=$('visitedCard'),letsgoCard=$('letsgoCard'),landingCard=$('landingCard'),mapCard=$('mapCard'),content=$('content');
@@ -227,11 +232,14 @@
 
   const code=(new URLSearchParams(location.search).get('c')||'').toUpperCase().trim();
   const visited=getVisited();
-  const map=new jsVectorMap({ selector:'#map', map:'world', zoomButtons:true, backgroundColor:'transparent', regionsSelectable:false,
+  const isCurVisited=!!(code&&visited.includes(code));
+  const map=new jsVectorMap({ selector:'#map', map:'world', zoomButtons:true, zoomOnScroll:false, backgroundColor:'transparent', regionsSelectable:false,
     regionStyle:{ initial:{ fill:'#d9ccb3', stroke:'#fffdf9', 'stroke-width':0.4 }, hover:{ fill:'#f6c98a' }, selected:{ fill:'#10b981' } },
     selectedRegions:visited,
+    series:{ regions:[{ attribute:'fill', values:(code&&!isCurVisited)?{[code]:'#f59e0b'}:{} }] },
     markerStyle:{ initial:{ fill:'#b45309', stroke:'#fffdf9', 'stroke-width':2, r:7 }, hover:{ fill:'#f59e0b' } } });
   updateMapStats();
+  if(code){ setTimeout(()=>{ try{ map.setFocus({ regions:[code], animate:true }); }catch(e){ try{ map.setFocus({ region:code, animate:true }); }catch(_){} } }, 650); }
   reveal($('heroInner'),80); reveal(mapCard,220);
   function surprise(){ const pool=Object.keys(DATA).filter(k=>k!==code); const list=pool.length?pool:Object.keys(DATA); location.href='?c='+list[Math.floor(Math.random()*list.length)]; }
   $('surpriseBtn').onclick=surprise; if($('surpriseBig')) $('surpriseBig').onclick=surprise;
@@ -241,7 +249,7 @@
   else { loadCountry(code); }
 
   async function loadCountry(cc){
-    let name=NAMES[cc]||null,capital=null,region="—",population="—",languages="—",langList=[],currencies="—",area=null,calling=null,driving=null,timezone=null,currencyCode=null,lat=null,lng=null,apiOk=false;
+    let name=countryName(cc)||null,capital=null,region="—",population="—",languages="—",langList=[],currencies="—",area=null,calling=null,driving=null,timezone=null,currencyCode=null,lat=null,lng=null,apiOk=false;
     try{ const res=await fetch(`https://restcountries.com/v3.1/alpha/${cc}?fields=name,capital,region,subregion,population,languages,currencies,area,timezones,car,idd,latlng,capitalInfo`);
       if(res.ok){ const j=await res.json(); const d=Array.isArray(j)?j[0]:j;
         if(d&&d.name){ apiOk=true; name=d.name.common; capital=(d.capital&&d.capital[0])||null; region=d.region+(d.subregion?` · ${d.subregion}`:""); population=d.population?d.population.toLocaleString():"—";
@@ -250,7 +258,7 @@
           area=d.area?Math.round(d.area).toLocaleString():null; calling=(d.idd&&d.idd.root)?(d.idd.root+((d.idd.suffixes&&d.idd.suffixes.length===1)?d.idd.suffixes[0]:"")):null; driving=(d.car&&d.car.side)?d.car.side:null; timezone=(d.timezones&&d.timezones.length)?d.timezones[0]:null;
           const ci=d.capitalInfo&&d.capitalInfo.latlng; lat=ci?ci[0]:(d.latlng?d.latlng[0]:null); lng=ci?ci[1]:(d.latlng?d.latlng[1]:null); } }
     }catch(e){}
-    if(!name){ nameEl.textContent=`Couldn't find "${cc}"`; taglineEl.textContent="That doesn't look like a valid 2-letter country code."; setBg(heroMedia,null); return; }
+    if(!name){ name=cc; }
     const already=visited.includes(cc);
     flagEl.textContent=flagFromCode(cc); nameEl.textContent=name; taglineEl.textContent=capital||"";
     if(already){ badgeEl.textContent="✓ Visited"; badgeEl.classList.remove('hidden'); }
