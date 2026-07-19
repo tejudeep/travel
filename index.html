@@ -70,11 +70,26 @@
   <script src="https://cdn.jsdelivr.net/npm/jsvectormap@1.5.3/dist/maps/world.js"></script>
   <script>
   // ===== EDIT THESE IF YOU WANT =====
-  const HOME_CITY = "Austin";           // departure city for flight links
-  const HIGHLIGHTS = {                   // optional: your own "don't miss" tips per country code
+  const HOME_CITY = "Austin";
+  const HIGHLIGHTS = {
     JP: ["Kyoto's temples & bamboo groves", "Tokyo food scene", "Mt. Fuji & hot springs"],
     IT: ["Rome's Colosseum", "Venice canals", "Amalfi Coast"],
     FR: ["Eiffel Tower, Paris", "French Riviera", "Loire Valley châteaux"]
+  };
+  // Backup names (used only if the live info service is unavailable)
+  const NAMES = {
+    JP:"Japan", IT:"Italy", FR:"France", ES:"Spain", DE:"Germany", GB:"United Kingdom",
+    US:"United States", MX:"Mexico", CA:"Canada", BR:"Brazil", AR:"Argentina", PE:"Peru",
+    CL:"Chile", CO:"Colombia", AU:"Australia", NZ:"New Zealand", TH:"Thailand", VN:"Vietnam",
+    IN:"India", CN:"China", KR:"South Korea", ID:"Indonesia", MY:"Malaysia", SG:"Singapore",
+    PH:"Philippines", GR:"Greece", PT:"Portugal", NL:"Netherlands", BE:"Belgium", CH:"Switzerland",
+    AT:"Austria", IE:"Ireland", SE:"Sweden", NO:"Norway", DK:"Denmark", FI:"Finland",
+    IS:"Iceland", PL:"Poland", CZ:"Czechia", HU:"Hungary", HR:"Croatia", TR:"Turkey",
+    EG:"Egypt", MA:"Morocco", ZA:"South Africa", KE:"Kenya", TZ:"Tanzania", AE:"United Arab Emirates",
+    IL:"Israel", JO:"Jordan", SA:"Saudi Arabia", QA:"Qatar", CR:"Costa Rica", PA:"Panama",
+    CU:"Cuba", DO:"Dominican Republic", JM:"Jamaica", EC:"Ecuador", BO:"Bolivia", UY:"Uruguay",
+    RO:"Romania", BG:"Bulgaria", RS:"Serbia", SK:"Slovakia", SI:"Slovenia", LK:"Sri Lanka",
+    NP:"Nepal", KH:"Cambodia", LA:"Laos", MM:"Myanmar", FJ:"Fiji", MV:"Maldives"
   };
   // ==================================
 
@@ -82,16 +97,22 @@
   function saveVisited(l){ localStorage.setItem('visited', JSON.stringify(l)); }
   const el = id => document.getElementById(id);
 
+  // 2-letter code -> flag emoji, no internet needed
+  function flagFromCode(cc){
+    if(!/^[A-Z]{2}$/.test(cc)) return "🌍";
+    return cc.replace(/./g, c => String.fromCodePoint(127397 + c.charCodeAt()));
+  }
+
   const code = (new URLSearchParams(location.search).get('c')||'').toUpperCase().trim();
   const visited = getVisited();
 
   const map = new jsVectorMap({
-    selector: '#map', map: 'world', zoomButtons: true, regionsSelectable: false,
-    regionStyle: { initial: { fill: '#dfe6e9' }, selected: { fill: '#2ecc71' } },
+    selector:'#map', map:'world', zoomButtons:true, regionsSelectable:false,
+    regionStyle:{ initial:{ fill:'#dfe6e9' }, selected:{ fill:'#2ecc71' } },
     selectedRegions: visited
   });
 
-  if (!code) {
+  if(!code){
     el('tagline').textContent = visited.length
       ? `You've visited ${visited.length} ${visited.length===1?'country':'countries'} so far 🌱`
       : "Tap one of your NFC tags to begin ✈️";
@@ -100,67 +121,84 @@
   }
 
   async function loadCountry(cc){
-    let data;
+    let name = NAMES[cc] || null;
+    let capital = null, region="—", population="—", currencies="—", languages="—", apiOk = false;
+
     try {
-      const res = await fetch(`https://restcountries.com/v3.1/alpha/${cc}`);
-      if (!res.ok) throw 0;
-      const json = await res.json();
-      data = Array.isArray(json) ? json[0] : json;
-      if (!data || !data.name) throw 0;
-    } catch(e) {
+      const url = `https://restcountries.com/v3.1/alpha/${cc}?fields=name,capital,region,subregion,population,languages,currencies`;
+      const res = await fetch(url);
+      if(res.ok){
+        const json = await res.json();
+        const d = Array.isArray(json) ? json[0] : json;
+        if(d && d.name){
+          apiOk = true;
+          name = d.name.common;
+          capital = (d.capital && d.capital[0]) || null;
+          region = d.region + (d.subregion ? ` · ${d.subregion}` : "");
+          population = d.population ? d.population.toLocaleString() : "—";
+          currencies = d.currencies ? Object.values(d.currencies).map(c=>c.name).join(", ") : "—";
+          languages  = d.languages  ? Object.values(d.languages).join(", ") : "—";
+        }
+      }
+    } catch(e){ /* offline or blocked — backup name is used */ }
+
+    if(!name){
       el('countryName').textContent = `Hmm, couldn't find "${cc}"`;
-      el('tagline').textContent = "Double-check the country code in the tag.";
+      el('tagline').textContent = "That doesn't look like a valid 2-letter country code.";
       return;
     }
-    const name = data.name.common;
-    const capital = (data.capital && data.capital[0]) || name;
-    el('flag').textContent = data.flag || "🌍";
-    el('countryName').textContent = name;
-    el('tagline').textContent = capital !== name ? `Capital: ${capital}` : "";
 
-    if (visited.includes(cc)) {
+    el('flag').textContent = flagFromCode(cc);
+    el('countryName').textContent = name;
+    el('tagline').textContent = capital ? `Capital: ${capital}` : "";
+
+    const info = { name, capital: capital || name, cc, region, population, currencies, languages, apiOk };
+
+    if(visited.includes(cc)){
       el('visitedName').textContent = name;
       el('visitedCard').classList.remove('hidden');
       el('infoCard').classList.remove('hidden');
-      showInfo(data, name, capital, cc);
+      showInfo(info);
     } else {
       el('questionText').textContent = `Have you been to ${name}?`;
       el('questionCard').classList.remove('hidden');
       el('yesBtn').onclick = () => { const l=getVisited(); if(!l.includes(cc)) l.push(cc); saveVisited(l); location.reload(); };
-      el('noBtn').onclick = () => { el('questionCard').classList.add('hidden'); el('letsgoCard').classList.remove('hidden'); };
-      el('letsgoBtn').onclick = () => { el('letsgoCard').classList.add('hidden'); el('infoCard').classList.remove('hidden'); showInfo(data, name, capital, cc); };
+      el('noBtn').onclick  = () => { el('questionCard').classList.add('hidden'); el('letsgoCard').classList.remove('hidden'); };
+      el('letsgoBtn').onclick = () => { el('letsgoCard').classList.add('hidden'); el('infoCard').classList.remove('hidden'); showInfo(info); };
     }
   }
 
-  async function showInfo(data, name, capital, cc){
-    const region = data.region + (data.subregion ? ` · ${data.subregion}` : "");
-    const population = data.population ? data.population.toLocaleString() : "—";
-    const currencies = data.currencies ? Object.values(data.currencies).map(c=>c.name).join(", ") : "—";
-    const languages = data.languages ? Object.values(data.languages).join(", ") : "—";
-    const flightsUrl = `https://www.google.com/travel/flights?q=` + encodeURIComponent(`Flights from ${HOME_CITY} to ${name}`);
+  async function showInfo(info){
+    const { name, cc, region, population, currencies, languages, apiOk } = info;
+    const flightsUrl    = `https://www.google.com/travel/flights?q=` + encodeURIComponent(`Flights from ${HOME_CITY} to ${name}`);
     const wikivoyageUrl = `https://en.wikivoyage.org/wiki/` + encodeURIComponent(name.replace(/ /g,'_'));
     const wikipediaUrl  = `https://en.wikipedia.org/wiki/` + encodeURIComponent(name.replace(/ /g,'_'));
+
     let highlightsHtml = "";
-    if (HIGHLIGHTS[cc] && HIGHLIGHTS[cc].length)
+    if(HIGHLIGHTS[cc] && HIGHLIGHTS[cc].length)
       highlightsHtml = `<h3>Don't miss</h3><ul class="highlight-list">${HIGHLIGHTS[cc].map(h=>`<li>${h}</li>`).join("")}</ul>`;
+
+    const factsHtml = apiOk ? `
+      <ul class="facts">
+        <li><span>Capital</span><span>${info.capital}</span></li>
+        <li><span>Region</span><span>${region}</span></li>
+        <li><span>Population</span><span>${population}</span></li>
+        <li><span>Languages</span><span>${languages}</span></li>
+        <li><span>Currency</span><span>${currencies}</span></li>
+      </ul>` : "";
 
     el('infoBody').classList.remove('loading');
     el('infoBody').innerHTML = `
       <a class="btn btn-blue btn-wide" href="${flightsUrl}" target="_blank" rel="noopener">✈️ See flights from ${HOME_CITY} to ${name}</a>
       <h3>About ${name}</h3><div id="aboutText">Loading…</div>
-      <ul class="facts">
-        <li><span>Capital</span><span>${capital}</span></li>
-        <li><span>Region</span><span>${region}</span></li>
-        <li><span>Population</span><span>${population}</span></li>
-        <li><span>Languages</span><span>${languages}</span></li>
-        <li><span>Currency</span><span>${currencies}</span></li>
-      </ul>
+      ${factsHtml}
       ${highlightsHtml}
       <h3>Plan your trip</h3>
       <div class="link-row">
         <a class="btn btn-ghost" href="${wikivoyageUrl}" target="_blank" rel="noopener">🧭 Things to do</a>
         <a class="btn btn-ghost" href="${wikipediaUrl}" target="_blank" rel="noopener">📖 History</a>
       </div>`;
+
     try {
       const w = await (await fetch(`https://en.wikipedia.org/api/rest_v1/page/summary/`+encodeURIComponent(name))).json();
       el('aboutText').textContent = w.extract || "No summary available.";
