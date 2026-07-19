@@ -3,95 +3,95 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="theme-color" content="#0ea5e9">
+<meta name="theme-color" content="#17171a">
 <title>Travel Map</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Sora:wght@600;700;800&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600;9..144,700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/jsvectormap@1.5.3/dist/css/jsvectormap.min.css">
 <style>
-  :root{ --bg:#f6f9fa; --card:#fff; --ink:#0f172a; --muted:#64748b; --line:#e8edf1;
-         --accent:#10b981; --radius:20px; --shadow:0 12px 34px -14px rgba(2,32,45,.20); }
+  :root{ --bg:#f7f3ec; --card:#fffdf9; --ink:#17171a; --muted:#6f6a61; --line:#e9e2d6;
+         --accent:#b45309; --green:#10b981; --radius:20px; --shadow:0 14px 38px -16px rgba(40,30,15,.25); }
   *{ box-sizing:border-box; }
   html{ scroll-behavior:smooth; }
-  body{ margin:0; background:var(--bg); color:var(--ink); font-family:Inter,-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;
-        -webkit-font-smoothing:antialiased; }
-  h1,h2,h4{ font-family:Sora,sans-serif; letter-spacing:-.01em; }
-  h2{ font-weight:700; font-size:22px; margin:6px 0 14px; }
-  .wrap{ max-width:880px; margin:0 auto; padding:0 16px 80px; }
-  section{ margin-top:22px; }
-  .kicker{ text-transform:uppercase; letter-spacing:.13em; font-size:12px; font-weight:700; color:var(--accent); }
+  body{ margin:0; background:var(--bg); color:var(--ink); font-family:Inter,-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif; -webkit-font-smoothing:antialiased; }
+  h1,h2,h3,h4,.celebrate{ font-family:Fraunces,Georgia,serif; letter-spacing:-.01em; }
+  h2{ font-weight:700; font-size:24px; margin:6px 0 14px; }
+  .wrap{ max-width:900px; margin:0 auto; padding:0 16px 90px; }
+  section{ margin-top:26px; }
+  .kicker{ text-transform:uppercase; letter-spacing:.15em; font-size:12px; font-weight:700; color:var(--accent); }
   .muted{ color:var(--muted); font-size:13px; margin:0; }
-  .prose{ color:#334155; line-height:1.75; font-size:15px; }
+  .prose{ color:#3a352c; line-height:1.8; font-size:15.5px; }
   .hidden{ display:none !important; }
 
-  /* Hero */
-  .hero{ position:relative; width:100%; min-height:46vh; display:flex; align-items:flex-end; overflow:hidden; }
-  .hero-media{ position:absolute; inset:0; background:linear-gradient(135deg,#0ea5e9,#10b981);
-               background-size:cover; background-position:center; transform:scale(1.05); }
-  .hero-grad{ position:absolute; inset:0; background:linear-gradient(180deg,rgba(2,20,28,0) 25%,rgba(2,20,28,.55) 72%,rgba(2,20,28,.85) 100%); }
-  .hero-inner{ position:relative; z-index:2; width:100%; max-width:880px; margin:0 auto; padding:26px 20px 56px; color:#fff; }
-  .hero-flag{ font-size:54px; line-height:1; filter:drop-shadow(0 5px 12px rgba(0,0,0,.4)); }
-  .hero h1{ font-weight:800; font-size:40px; margin:6px 0 4px; text-shadow:0 2px 22px rgba(0,0,0,.4); }
+  .hero{ position:relative; width:100%; min-height:50vh; display:flex; align-items:flex-end; overflow:hidden; }
+  .hero-media{ position:absolute; inset:0; background:linear-gradient(135deg,#0e7490,#10b981); background-size:cover; background-position:center; transform:scale(1.05); animation:kenburns 20s ease-out forwards; }
+  @keyframes kenburns{ from{transform:scale(1.05)} to{transform:scale(1.16)} }
+  .hero-grad{ position:absolute; inset:0; background:linear-gradient(180deg,rgba(15,12,8,0) 25%,rgba(15,12,8,.5) 70%,rgba(15,12,8,.86) 100%); }
+  .hero-inner{ position:relative; z-index:2; width:100%; max-width:900px; margin:0 auto; padding:26px 20px 58px; color:#fff; }
+  .hero-flag{ font-size:56px; line-height:1; filter:drop-shadow(0 5px 12px rgba(0,0,0,.45)); }
+  .hero h1{ font-weight:700; font-size:44px; margin:6px 0 4px; text-shadow:0 2px 26px rgba(0,0,0,.45); }
   .hero-sub{ font-size:16px; opacity:.95; margin:0; }
-  .badge{ display:inline-flex; align-items:center; gap:6px; background:rgba(16,185,129,.96); color:#fff;
-          font-size:12px; font-weight:600; padding:6px 13px; border-radius:999px; margin-bottom:10px; }
-  @media(min-width:720px){ .hero{ min-height:54vh; } .hero h1{ font-size:54px; } }
+  .badge{ display:inline-flex; align-items:center; gap:6px; background:rgba(16,185,129,.96); color:#fff; font-size:12px; font-weight:600; padding:6px 13px; border-radius:999px; margin-bottom:10px; }
+  @media(min-width:720px){ .hero{ min-height:58vh; } .hero h1{ font-size:60px; } }
 
-  /* Cards & buttons */
-  .card{ background:var(--card); border:1px solid var(--line); border-radius:var(--radius); padding:20px; box-shadow:var(--shadow); }
-  .q,#visitedCard,#letsgoCard{ margin-top:-42px; position:relative; z-index:5; }
+  .card{ background:var(--card); border:1px solid var(--line); border-radius:var(--radius); padding:22px; box-shadow:var(--shadow); }
+  .q,#visitedCard,#letsgoCard{ margin-top:-44px; position:relative; z-index:5; }
   .q{ text-align:center; } .q h2{ margin:0 0 16px; }
   .q .btns{ display:flex; gap:10px; justify-content:center; flex-wrap:wrap; }
-  .celebrate{ text-align:center; font-family:Sora; font-weight:700; font-size:20px; color:var(--accent); margin:0; }
-  .btn{ display:inline-flex; align-items:center; justify-content:center; gap:8px; border:none; cursor:pointer;
-        font-family:Inter; font-size:15px; font-weight:600; padding:14px 22px; border-radius:999px; text-decoration:none;
-        transition:transform .16s ease, box-shadow .22s ease; }
+  .celebrate{ text-align:center; font-weight:700; font-size:22px; color:var(--green); margin:0; }
+  .btn{ display:inline-flex; align-items:center; justify-content:center; gap:8px; border:none; cursor:pointer; font-family:Inter; font-size:15px; font-weight:600; padding:14px 22px; border-radius:999px; text-decoration:none; transition:transform .16s ease, box-shadow .22s ease; }
   .btn:active{ transform:scale(.97); }
   .btn-yes{ background:linear-gradient(135deg,#10b981,#059669); color:#fff; box-shadow:0 12px 22px -10px rgba(16,185,129,.8); }
-  .btn-yes:hover{ transform:translateY(-2px); }
   .btn-ghost{ background:#fff; color:var(--ink); border:1px solid var(--line); }
-  .btn-ghost:hover{ background:#f8fafc; }
-  .btn-lets{ width:100%; background:linear-gradient(135deg,#0ea5e9,#6366f1); color:#fff; font-size:17px; padding:17px;
-             box-shadow:0 16px 32px -12px rgba(79,70,229,.65); }
-  .btn-lets:hover{ transform:translateY(-2px); }
-  .btn-fly{ background:linear-gradient(135deg,#0ea5e9,#2563eb); color:#fff; white-space:nowrap;
-            box-shadow:0 12px 22px -10px rgba(37,99,235,.7); }
-  .btn-fly:hover{ transform:translateY(-2px); }
+  .btn-ghost:hover{ background:#f4efe6; }
+  .btn-lets{ width:100%; background:linear-gradient(135deg,#0f766e,#134e4a); color:#fff; font-size:17px; padding:17px; box-shadow:0 16px 32px -12px rgba(15,118,110,.6); }
+  .btn-yes:hover,.btn-lets:hover,.btn-fly:hover{ transform:translateY(-2px); }
+  .btn-fly{ background:linear-gradient(135deg,#0e7490,#155e75); color:#fff; white-space:nowrap; box-shadow:0 12px 22px -10px rgba(14,116,144,.7); }
   .cta{ display:flex; align-items:center; justify-content:space-between; gap:16px; flex-wrap:wrap; }
 
-  /* Map */
-  #map{ width:100%; height:320px; }
+  #map{ width:100%; height:330px; }
 
-  /* Things-to-do grid */
   .grid{ display:grid; grid-template-columns:repeat(auto-fill,minmax(220px,1fr)); gap:16px; }
-  .tile{ display:block; text-decoration:none; color:inherit; background:var(--card); border:1px solid var(--line);
-         border-radius:18px; overflow:hidden; box-shadow:var(--shadow); transition:transform .25s ease, box-shadow .25s ease; }
-  .tile:hover{ transform:translateY(-5px); box-shadow:0 22px 44px -16px rgba(2,32,45,.32); }
-  .tile .img{ aspect-ratio:4/3; background:linear-gradient(135deg,#cbd5e1,#93c5fd); background-size:cover; background-position:center; transition:transform .55s ease; }
+  .tile{ position:relative; display:block; text-decoration:none; color:inherit; background:var(--card); border:1px solid var(--line); border-radius:18px; overflow:hidden; box-shadow:var(--shadow); transition:transform .25s ease, box-shadow .25s ease; }
+  .tile:hover{ transform:translateY(-5px); box-shadow:0 24px 46px -18px rgba(40,30,15,.35); }
+  .tile .img{ aspect-ratio:4/3; background:linear-gradient(135deg,#d6ccb8,#a7c4bc); background-size:cover; background-position:center; transition:transform .55s ease; }
   .tile:hover .img{ transform:scale(1.07); }
   .tile .body{ padding:14px 15px 16px; }
-  .tile h4{ margin:0 0 6px; font-size:16px; }
+  .tile h4{ margin:0 0 6px; font-size:17px; }
   .tile p{ margin:0; font-size:13px; color:var(--muted); line-height:1.55; }
+  .gem-badge{ position:absolute; top:10px; left:10px; background:rgba(180,83,9,.96); color:#fff; font-size:11px; font-weight:700; padding:4px 10px; border-radius:999px; }
 
-  /* History feature */
-  .feature{ display:grid; grid-template-columns:1fr 1.1fr; gap:20px; align-items:center; }
-  .fimg{ aspect-ratio:4/3; border-radius:18px; background:linear-gradient(135deg,#cbd5e1,#93c5fd); background-size:cover; background-position:center; box-shadow:var(--shadow); }
-  @media(max-width:640px){ .feature{ grid-template-columns:1fr; } }
+  .feature{ display:grid; grid-template-columns:1fr 1.1fr; gap:22px; align-items:center; }
+  .fimg{ aspect-ratio:4/3; border-radius:18px; background:linear-gradient(135deg,#d6ccb8,#a7c4bc); background-size:cover; background-position:center; box-shadow:var(--shadow); }
+  .feature.reverse .fimg{ order:2; }
+  @media(max-width:640px){ .feature{ grid-template-columns:1fr; } .feature.reverse .fimg{ order:0; } }
 
-  /* Facts chips */
   .chips{ display:flex; flex-wrap:wrap; gap:10px; }
-  .chip{ background:#f1f5f7; border:1px solid var(--line); border-radius:999px; padding:8px 14px; font-size:13px; }
+  .chip{ background:#f4efe6; border:1px solid var(--line); border-radius:999px; padding:8px 14px; font-size:13px; }
   .chip span{ color:var(--muted); } .chip b{ color:var(--ink); font-weight:600; }
 
-  /* Skeletons + reveal animation */
-  .skeleton{ background:linear-gradient(90deg,#eef2f4 25%,#e1e8ec 37%,#eef2f4 63%); background-size:400% 100%; animation:shimmer 1.4s infinite; }
+  .holidays{ list-style:none; padding:0; margin:0; display:grid; gap:8px; }
+  .holidays li{ display:flex; justify-content:space-between; gap:12px; padding:11px 15px; background:#f4efe6; border:1px solid var(--line); border-radius:12px; font-size:14px; }
+  .holidays .hd{ color:var(--muted); white-space:nowrap; }
+
+  .explore{ display:grid; grid-template-columns:1fr 1fr; gap:16px; }
+  @media(max-width:640px){ .explore{ grid-template-columns:1fr; } }
+  .xcard{ display:flex; flex-direction:column; text-decoration:none; color:#fff; border-radius:20px; padding:22px; min-height:160px; box-shadow:var(--shadow); transition:transform .2s ease; }
+  .xcard:hover{ transform:translateY(-4px); }
+  .xcard-ao{ background:linear-gradient(135deg,#1f2a2e,#31504a); }
+  .xcard-cr{ background:linear-gradient(135deg,#7c2d12,#b45309); }
+  .xtag{ font-size:12px; letter-spacing:.14em; text-transform:uppercase; font-weight:700; opacity:.85; }
+  .xcard h3{ margin:10px 0 6px; font-size:21px; }
+  .xcard p{ margin:0 0 auto; font-size:14px; opacity:.92; }
+  .xgo{ margin-top:14px; font-weight:600; }
+
+  .skeleton{ background:linear-gradient(90deg,# efe9dd 25%,#e4dccc 37%,#efe9dd 63%); background:linear-gradient(90deg,#efe9dd 25%,#e4dccc 37%,#efe9dd 63%); background-size:400% 100%; animation:shimmer 1.4s infinite; }
   @keyframes shimmer{ 0%{background-position:100% 0} 100%{background-position:0 0} }
   .sk-line{ height:12px; border-radius:6px; margin:9px 0; } .sk-line.short{ width:60%; }
   .reveal{ opacity:0; transform:translateY(16px); transition:opacity .6s cubic-bezier(.2,.7,.2,1), transform .6s cubic-bezier(.2,.7,.2,1); }
   .reveal.in{ opacity:1; transform:none; }
-
-  footer{ text-align:center; color:var(--muted); font-size:12px; padding:34px 16px; }
+  footer{ text-align:center; color:var(--muted); font-size:12px; padding:36px 16px; }
 </style>
 </head>
 <body>
@@ -114,24 +114,13 @@
         <button class="btn btn-ghost" id="noBtn">Not yet ✈️</button>
       </div>
     </section>
+    <section class="card reveal hidden" id="visitedCard"><p class="celebrate">🎉 You've been to <span id="visitedName"></span>!</p></section>
+    <section class="reveal hidden" id="letsgoCard"><button class="btn btn-lets" id="letsgoBtn">Let's go — explore this place ✨</button></section>
 
-    <section class="card reveal hidden" id="visitedCard">
-      <p class="celebrate">🎉 You've been to <span id="visitedName"></span>!</p>
-    </section>
-
-    <section class="reveal hidden" id="letsgoCard">
-      <button class="btn btn-lets" id="letsgoBtn">Let's go — explore this place ✨</button>
-    </section>
-
-    <section class="card reveal" id="mapCard">
-      <span class="kicker">Your journey</span>
-      <h2 id="mapTitle">Your travel map</h2>
-      <div id="map"></div>
-    </section>
+    <section class="card reveal" id="mapCard"><span class="kicker">Your journey</span><h2 id="mapTitle">Your travel map</h2><div id="map"></div></section>
 
     <div id="content" class="hidden"></div>
   </main>
-
   <footer>A little travel gift 💚</footer>
 
   <script src="https://cdn.jsdelivr.net/npm/jsvectormap@1.5.3/dist/js/jsvectormap.min.js"></script>
@@ -139,7 +128,6 @@
   <script>
   // ===== EDIT THESE =====
   const HOME_CITY = "Austin";
-  // Hand-picked places per country. Use Wikipedia article titles for the best photos.
   const HIGHLIGHTS = {
     JP:["Mount Fuji","Fushimi Inari-taisha","Kinkaku-ji","Tokyo Tower","Itsukushima Shrine","Arashiyama"],
     IT:["Colosseum","Venice","Florence Cathedral","Amalfi Coast","Leaning Tower of Pisa","Pompeii"],
@@ -157,6 +145,17 @@
     EG:["Giza pyramid complex","Great Sphinx of Giza","Karnak","Valley of the Kings","Abu Simbel","Luxor Temple"],
     PE:["Machu Picchu","Cusco","Sacsayhuamán","Lake Titicaca","Nazca Lines","Vinicunca"]
   };
+  const HIDDEN_GEMS = {
+    JP:["Jigokudani Monkey Park","Shirakawa-gō","Nara Park"],
+    IT:["Sassi di Matera","Civita di Bagnoregio","Alberobello"],
+    FR:["Rocamadour","Gorges du Verdon","Carnac stones"],
+    ES:["Setenil de las Bodegas","Ronda","Montserrat (mountain)"],
+    US:["Antelope Canyon","Salvation Mountain","Winchester Mystery House"],
+    MX:["Las Pozas","Hierve el Agua","Guanajuato"],
+    GR:["Navagio","Monemvasia","Zagori"],
+    IN:["Hampi","Living root bridge","Jaisalmer"],
+    PE:["Choquequirao","Huacachina","Colca Canyon"]
+  };
   const NAMES = {
     JP:"Japan",IT:"Italy",FR:"France",ES:"Spain",DE:"Germany",GB:"United Kingdom",US:"United States",MX:"Mexico",
     CA:"Canada",BR:"Brazil",AR:"Argentina",PE:"Peru",CL:"Chile",CO:"Colombia",AU:"Australia",NZ:"New Zealand",
@@ -172,32 +171,34 @@
 
   const $ = id => document.getElementById(id);
   const heroMedia=$('heroMedia'), flagEl=$('flag'), nameEl=$('countryName'), taglineEl=$('tagline'), badgeEl=$('badge'),
-        questionCard=$('questionCard'), visitedCard=$('visitedCard'), letsgoCard=$('letsgoCard'),
-        mapCard=$('mapCard'), content=$('content'), mapTitle=$('mapTitle');
+        questionCard=$('questionCard'), visitedCard=$('visitedCard'), letsgoCard=$('letsgoCard'), mapCard=$('mapCard'), content=$('content');
 
   function getVisited(){ try{return JSON.parse(localStorage.getItem('visited')||'[]')}catch(e){return[]} }
   function saveVisited(l){ localStorage.setItem('visited', JSON.stringify(l)); }
   function flagFromCode(cc){ return /^[A-Z]{2}$/.test(cc)? cc.replace(/./g,c=>String.fromCodePoint(127397+c.charCodeAt())) : "🌍"; }
   function reveal(n,d=0){ if(n) setTimeout(()=>n.classList.add('in'), d); }
-  function revealAll(root,step=90){ root.querySelectorAll('.reveal').forEach((n,i)=>reveal(n,i*step)); }
-  function esc(s){ return (s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
-  function setBg(node,url){ if(!node) return; if(!url){ node.classList.remove('skeleton'); return; }
-    const im=new Image(); im.onload=()=>{ node.style.backgroundImage=`url("${url}")`; node.classList.remove('skeleton'); };
-    im.onerror=()=>node.classList.remove('skeleton'); im.src=url; }
-  function imgFrom(s,size){ if(!s) return null;
-    if(s.thumbnail&&s.thumbnail.source) return s.thumbnail.source.replace(/\/\d+px-/,'/'+size+'px-');
-    if(s.originalimage&&s.originalimage.source) return s.originalimage.source; return null; }
-  async function wikiSummary(title){ try{
-      const r=await fetch('https://en.wikipedia.org/api/rest_v1/page/summary/'+encodeURIComponent(title.replace(/ /g,'_')));
-      return r.ok? await r.json() : null;
-    }catch(e){ return null; } }
+  function revealAll(root,step=80){ root.querySelectorAll('.reveal').forEach((n,i)=>reveal(n,i*step)); }
+  function esc(s){ return (s||'').toString().replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
+  function escA(s){ return esc(s).replace(/"/g,'&quot;'); }
+  function setBg(node,url,fb){ if(!node) return;
+    const t=url||fb; if(!t){ node.classList.remove('skeleton'); return; }
+    const im=new Image();
+    im.onload=()=>{ node.style.backgroundImage=`url("${t}")`; node.classList.remove('skeleton'); };
+    im.onerror=()=>{ if(fb&&fb!==t){ setBg(node,fb,null); } else { node.classList.remove('skeleton'); } };
+    im.src=t; }
+  function imgURLs(s,want){ if(!s) return {main:null,fb:null};
+    const t=s.thumbnail,o=s.originalimage;
+    if(t&&t.source){ const cap=(o&&o.width)?o.width:(t.width||want); const size=Math.max(200,Math.min(want,cap));
+      return { main:t.source.replace(/\/\d+px-/,'/'+size+'px-'), fb:t.source }; }
+    if(o&&o.source) return {main:o.source, fb:o.source};
+    return {main:null,fb:null}; }
+  function hydrateImages(root){ root.querySelectorAll('[data-main]').forEach(n=>setBg(n, n.dataset.main||null, n.dataset.fb||null)); }
+  async function wikiSummary(title){ try{ const r=await fetch('https://en.wikipedia.org/api/rest_v1/page/summary/'+encodeURIComponent(title.replace(/ /g,'_'))); return r.ok?await r.json():null; }catch(e){ return null; } }
 
   const code=(new URLSearchParams(location.search).get('c')||'').toUpperCase().trim();
   const visited=getVisited();
-
   const map=new jsVectorMap({ selector:'#map', map:'world', zoomButtons:true, regionsSelectable:false,
-    regionStyle:{ initial:{fill:'#e2e8ec'}, selected:{fill:'#10b981'} }, selectedRegions:visited });
-
+    regionStyle:{ initial:{fill:'#e2ddd0'}, selected:{fill:'#10b981'} }, selectedRegions:visited });
   reveal($('heroInner'),80); reveal(mapCard,220);
 
   if(!code){
@@ -207,14 +208,20 @@
   } else { loadCountry(code); }
 
   async function loadCountry(cc){
-    let name=NAMES[cc]||null, capital=null, region="—", population="—", currencies="—", languages="—", apiOk=false;
+    let name=NAMES[cc]||null, capital=null, region="—", population="—", languages="—", currencies="—",
+        area=null, calling=null, driving=null, timezone=null, currencyCode=null, apiOk=false;
     try{
-      const res=await fetch(`https://restcountries.com/v3.1/alpha/${cc}?fields=name,capital,region,subregion,population,languages,currencies`);
+      const res=await fetch(`https://restcountries.com/v3.1/alpha/${cc}?fields=name,capital,region,subregion,population,languages,currencies,area,timezones,car,idd`);
       if(res.ok){ const j=await res.json(); const d=Array.isArray(j)?j[0]:j;
         if(d&&d.name){ apiOk=true; name=d.name.common; capital=(d.capital&&d.capital[0])||null;
           region=d.region+(d.subregion?` · ${d.subregion}`:""); population=d.population?d.population.toLocaleString():"—";
-          currencies=d.currencies?Object.values(d.currencies).map(c=>c.name).join(", "):"—";
-          languages=d.languages?Object.values(d.languages).join(", "):"—"; } }
+          languages=d.languages?Object.values(d.languages).join(", "):"—";
+          if(d.currencies){ currencyCode=Object.keys(d.currencies)[0]; currencies=Object.values(d.currencies).map(c=>c.symbol?`${c.name} (${c.symbol})`:c.name).join(", "); }
+          area=d.area?Math.round(d.area).toLocaleString():null;
+          calling=(d.idd&&d.idd.root)?(d.idd.root+((d.idd.suffixes&&d.idd.suffixes.length===1)?d.idd.suffixes[0]:"")):null;
+          driving=(d.car&&d.car.side)?d.car.side:null;
+          timezone=(d.timezones&&d.timezones.length)?d.timezones[0]:null;
+        } }
     }catch(e){}
 
     if(!name){ nameEl.textContent=`Couldn't find "${cc}"`; taglineEl.textContent="That doesn't look like a valid 2-letter country code."; setBg(heroMedia,null); return; }
@@ -223,73 +230,110 @@
     flagEl.textContent=flagFromCode(cc); nameEl.textContent=name; taglineEl.textContent=capital||"";
     if(already){ badgeEl.textContent="✓ Visited"; badgeEl.classList.remove('hidden'); }
 
-    const ctx={cc,name,capital:capital||name,region,population,currencies,languages,apiOk};
-    renderSkeletons(ctx); prepareContent(ctx);
+    const ctx={cc,name,capital:capital||name,region,population,languages,currencies,area,calling,driving,timezone,currencyCode,apiOk};
+    renderContent(ctx); prepareContent(ctx);
 
-    if(already){
-      $('visitedName').textContent=name; visitedCard.classList.remove('hidden'); reveal(visitedCard,120); showContent();
-    } else {
+    if(already){ $('visitedName').textContent=name; visitedCard.classList.remove('hidden'); reveal(visitedCard,120); showContent(); }
+    else{
       $('questionText').textContent=`Have you been to ${name}?`; questionCard.classList.remove('hidden'); reveal(questionCard,120);
       $('yesBtn').onclick=()=>{ const l=getVisited(); if(!l.includes(cc))l.push(cc); saveVisited(l); location.reload(); };
       $('noBtn').onclick=()=>{ questionCard.classList.add('hidden'); letsgoCard.classList.remove('hidden'); reveal(letsgoCard,40); };
       $('letsgoBtn').onclick=()=>{ letsgoCard.classList.add('hidden'); showContent(); };
     }
   }
+  function showContent(){ content.classList.remove('hidden'); revealAll(content,80); }
 
-  function showContent(){ content.classList.remove('hidden'); revealAll(content,90); }
+  function storyMarkup(key,kicker,heading,reverse){
+    return `<section class="reveal" id="${key}Section"><div class="feature${reverse?' reverse':''}">
+      <div class="fimg skeleton" id="${key}Img"></div>
+      <div><span class="kicker">${kicker}</span><h2>${heading}</h2><p class="prose" id="${key}Text">Loading…</p></div></div></section>`;
+  }
 
-  function renderSkeletons(ctx){
-    const flightsUrl=`https://www.google.com/travel/flights?q=`+encodeURIComponent(`Flights from ${HOME_CITY} to ${ctx.name}`);
-    const n=(HIGHLIGHTS[ctx.cc]||[]).length||6; let tiles='';
-    for(let i=0;i<n;i++) tiles+=`<div class="tile"><div class="img skeleton"></div><div class="body"><div class="sk-line skeleton"></div><div class="sk-line short skeleton"></div></div></div>`;
+  function renderContent(ctx){
+    const flightsUrl='https://www.google.com/travel/flights?q='+encodeURIComponent(`Flights from ${HOME_CITY} to ${ctx.name}`);
+    const aoSlug=ctx.name.toLowerCase().replace(/[^a-z0-9]+/g,'-').replace(/(^-|-$)/g,'');
+    const crName=ctx.name.replace(/\s+/g,'');
+    const nP=((HIGHLIGHTS[ctx.cc]||[]).length+(HIDDEN_GEMS[ctx.cc]||[]).length)||6;
+    let sk=''; for(let i=0;i<nP;i++) sk+=`<div class="tile"><div class="img skeleton"></div><div class="body"><div class="sk-line skeleton"></div><div class="sk-line short skeleton"></div></div></div>`;
     const facts = ctx.apiOk ? `
       <section class="card reveal" id="factsCard"><span class="kicker">Quick facts</span><h2>Good to know</h2>
-        <div class="chips">
+        <div class="chips" id="factsChips">
           <div class="chip"><span>Capital</span> <b>${esc(ctx.capital)}</b></div>
           <div class="chip"><span>Region</span> <b>${esc(ctx.region)}</b></div>
           <div class="chip"><span>Population</span> <b>${esc(ctx.population)}</b></div>
+          ${ctx.area?`<div class="chip"><span>Area</span> <b>${esc(ctx.area)} km²</b></div>`:''}
           <div class="chip"><span>Languages</span> <b>${esc(ctx.languages)}</b></div>
           <div class="chip"><span>Currency</span> <b>${esc(ctx.currencies)}</b></div>
+          ${ctx.calling?`<div class="chip"><span>Dial code</span> <b>${esc(ctx.calling)}</b></div>`:''}
+          ${ctx.driving?`<div class="chip"><span>Driving</span> <b>${esc(ctx.driving)} side</b></div>`:''}
+          ${ctx.timezone?`<div class="chip"><span>Time zone</span> <b>${esc(ctx.timezone)}</b></div>`:''}
         </div></section>` : '';
     content.innerHTML=`
-      <section class="card cta reveal" id="flightsCard">
-        <div><span class="kicker">Getting there</span><h2 style="margin:2px 0">Fly from ${esc(HOME_CITY)}</h2><p class="muted">Check live prices on Google Flights</p></div>
-        <a class="btn btn-fly" href="${flightsUrl}" target="_blank" rel="noopener">✈️ See flights</a>
-      </section>
+      <section class="card cta reveal" id="flightsCard"><div><span class="kicker">Getting there</span><h2 style="margin:2px 0">Fly from ${esc(HOME_CITY)}</h2><p class="muted">Live prices on Google Flights</p></div>
+        <a class="btn btn-fly" href="${flightsUrl}" target="_blank" rel="noopener">✈️ See flights</a></section>
       <section class="reveal" id="aboutSection"><span class="kicker">Overview</span><h2>About ${esc(ctx.name)}</h2><p class="prose" id="aboutText">Loading…</p></section>
-      <section class="reveal" id="thingsSection"><span class="kicker">Things to do</span><h2>Must-see places</h2>
-        <div class="grid" id="thingsGrid">${tiles}</div><p class="prose hidden" id="thingsFallback"></p></section>
-      <section class="reveal hidden" id="historySection"><span class="kicker">History</span><h2>A glimpse into the past</h2>
-        <div class="feature"><div class="fimg skeleton" id="historyImg"></div><p class="prose" id="historyText">Loading…</p></div></section>
-      ${facts}`;
+      <section class="reveal" id="placesSection"><span class="kicker">Wondrous places</span><h2>Must-see &amp; hidden gems</h2>
+        <div class="grid" id="placesGrid">${sk}</div><p class="prose hidden" id="placesFallback"></p></section>
+      ${storyMarkup('history','History','Through the ages',false)}
+      ${storyMarkup('culture','Culture','Life &amp; traditions',true)}
+      ${storyMarkup('cuisine','Cuisine','What to eat',false)}
+      ${facts}
+      <section class="card reveal hidden" id="holidaysSection"><span class="kicker">Calendar</span><h2>Public holidays this year</h2><ul class="holidays" id="holidaysList"></ul></section>
+      <section class="reveal" id="exploreSection"><span class="kicker">Explore deeper</span><h2>Down the rabbit hole</h2>
+        <div class="explore">
+          <a class="xcard xcard-ao" href="https://www.atlasobscura.com/things-to-do/${encodeURIComponent(aoSlug)}" target="_blank" rel="noopener"><div class="xtag">Atlas Obscura</div><h3>Hidden wonders &amp; curious places</h3><p>Offbeat sights and the stories behind them.</p><span class="xgo">Discover →</span></a>
+          <a class="xcard xcard-cr" href="https://www.countryreports.org/country/${encodeURIComponent(crName)}.htm" target="_blank" rel="noopener"><div class="xtag">CountryReports</div><h3>The full country report</h3><p>Culture, economy, geography &amp; daily life.</p><span class="xgo">Read report →</span></a>
+        </div></section>`;
+  }
+
+  function fillStory(key,sum,fallbackSum){
+    const sec=$(key+'Section'); if(!sec) return;
+    if(sum&&sum.extract){ $(key+'Text').textContent=sum.extract;
+      let u=imgURLs(sum,900); if(!u.main){ u=imgURLs(fallbackSum,900); } setBg($(key+'Img'),u.main,u.fb);
+    } else { sec.classList.add('hidden'); }
   }
 
   async function prepareContent(ctx){
-    const titles=HIGHLIGHTS[ctx.cc]||[];
-    const [countrySum,historySum,attrs]=await Promise.all([
-      wikiSummary(ctx.name), wikiSummary('History of '+ctx.name), Promise.all(titles.map(t=>wikiSummary(t)))
+    const titles=(HIGHLIGHTS[ctx.cc]||[]), gems=(HIDDEN_GEMS[ctx.cc]||[]);
+    const allPlaces=titles.map(t=>({t,gem:false})).concat(gems.map(t=>({t,gem:true})));
+    const [countrySum,histSum,cultSum,cuisSum,placeSums]=await Promise.all([
+      wikiSummary(ctx.name), wikiSummary('History of '+ctx.name), wikiSummary('Culture of '+ctx.name),
+      wikiSummary('Cuisine of '+ctx.name), Promise.all(allPlaces.map(p=>wikiSummary(p.t)))
     ]);
 
-    let heroUrl=null; for(const s of attrs){ const u=imgFrom(s,1200); if(u){heroUrl=u;break;} }
-    if(!heroUrl) heroUrl=imgFrom(countrySum,1200);
-    setBg(heroMedia,heroUrl);
+    let hero=null,heroFb=null;
+    for(const s of placeSums){ const u=imgURLs(s,1400); if(u.main){hero=u.main;heroFb=u.fb;break;} }
+    if(!hero){ const u=imgURLs(countrySum,1400); hero=u.main; heroFb=u.fb; }
+    setBg(heroMedia,hero,heroFb);
 
     if($('aboutText')) $('aboutText').textContent=(countrySum&&countrySum.extract)||"Description unavailable right now.";
+    fillStory('history',histSum,countrySum); fillStory('culture',cultSum,countrySum); fillStory('cuisine',cuisSum,countrySum);
 
-    if(historySum&&historySum.extract){ $('historySection').classList.remove('hidden');
-      $('historyText').textContent=historySum.extract; setBg($('historyImg'), imgFrom(historySum,900)||imgFrom(countrySum,900)); }
-
-    const grid=$('thingsGrid');
-    if(!titles.length){ grid.classList.add('hidden'); const fb=$('thingsFallback'); fb.classList.remove('hidden');
-      fb.innerHTML=`No hand-picked spots for ${esc(ctx.name)} yet — <a href="https://en.wikivoyage.org/wiki/${encodeURIComponent(ctx.name.replace(/ /g,'_'))}" target="_blank" rel="noopener">browse ideas on Wikivoyage →</a>`;
+    const grid=$('placesGrid');
+    if(!allPlaces.length){ grid.classList.add('hidden'); const fb=$('placesFallback'); fb.classList.remove('hidden');
+      fb.innerHTML=`No hand-picked spots yet — <a href="https://en.wikivoyage.org/wiki/${encodeURIComponent(ctx.name.replace(/ /g,'_'))}" target="_blank" rel="noopener">browse ideas on Wikivoyage →</a>`;
     } else {
-      grid.innerHTML=titles.map((t,i)=>{ const s=attrs[i]; const title=(s&&s.title)||t;
+      grid.innerHTML=allPlaces.map((p,i)=>{ const s=placeSums[i]; const title=(s&&s.title)||p.t;
         let desc=(s&&s.extract)||""; if(desc.length>150) desc=desc.slice(0,150).replace(/\s+\S*$/,'')+'…';
-        const img=imgFrom(s,600); const link=(s&&s.content_urls&&s.content_urls.desktop&&s.content_urls.desktop.page)||`https://en.wikipedia.org/wiki/${encodeURIComponent(t.replace(/ /g,'_'))}`;
-        return `<a class="tile" href="${link}" target="_blank" rel="noopener"><div class="img" ${img?`style="background-image:url('${img}')"`:''}></div>
-          <div class="body"><h4>${esc(title)}</h4><p>${esc(desc)}</p></div></a>`;
+        const u=imgURLs(s,700); const link=(s&&s.content_urls&&s.content_urls.desktop&&s.content_urls.desktop.page)||('https://en.wikipedia.org/wiki/'+encodeURIComponent(p.t.replace(/ /g,'_')));
+        return `<a class="tile" href="${escA(link)}" target="_blank" rel="noopener"><div class="img skeleton" data-main="${escA(u.main||'')}" data-fb="${escA(u.fb||'')}"></div>${p.gem?'<span class="gem-badge">✨ Hidden gem</span>':''}<div class="body"><h4>${esc(title)}</h4><p>${esc(desc)}</p></div></a>`;
       }).join('');
+      hydrateImages(grid);
     }
+
+    if(ctx.apiOk && ctx.currencyCode){ try{ const r=await fetch('https://open.er-api.com/v6/latest/USD'); const j=await r.json();
+      const rate=j&&j.rates&&j.rates[ctx.currencyCode];
+      if(rate){ const c=document.createElement('div'); c.className='chip'; c.innerHTML=`<span>Exchange</span> <b>1 USD ≈ ${(Math.round(rate*100)/100).toLocaleString()} ${esc(ctx.currencyCode)}</b>`; const box=$('factsChips'); if(box) box.appendChild(c); }
+    }catch(e){} }
+
+    try{ const year=new Date().getFullYear();
+      const r=await fetch(`https://date.nager.at/api/v3/PublicHolidays/${year}/${ctx.cc}`);
+      if(r.ok){ const hs=await r.json();
+        if(Array.isArray(hs)&&hs.length){ $('holidaysList').innerHTML=hs.slice(0,10).map(h=>{
+            const d=new Date(h.date+'T00:00:00'); const ds=d.toLocaleDateString('en-US',{month:'short',day:'numeric'});
+            return `<li><span>${esc(h.name)}</span><span class="hd">${ds}</span></li>`; }).join('');
+          const sec=$('holidaysSection'); sec.classList.remove('hidden'); reveal(sec); } }
+    }catch(e){}
   }
   </script>
 </body>
